@@ -1,0 +1,174 @@
+## TEMA 2 ENCAPSULACIÓN 
+
+### 1. En Programación Orientada a Objetos (POO), ¿Qué buscan la encapsulación y la ocultación de información?
+ Enumera brevemente algunas ventajas de la ocultación de información.
+
+ Respuesta: 
+
+ Encapsulación: Agrupa datos y métodos dentro de una clase.
+
+Ocultación: Protege los detalles internos, mostrando solo lo necesario.
+
+Ventajas de la ocultación
+
+Protege los datos de cambios indebidos.
+
+Reduce errores y dependencias externas.
+
+Permite cambiar la implementación interna sin afectar a otros.
+
+Facilita el mantenimiento y la claridad del código.
+
+### 2. ¿Qué se entiende por la interfaz pública de un objeto o clase en POO?
+ Describe brevemente cómo se relaciona con la ocultación de información
+
+ Respuesta: Interfaz pública en POO
+
+La interfaz pública de un objeto o clase es el conjunto de métodos y propiedades que otros objetos pueden usar
+ para interactuar con él, sin necesidad de conocer los detalles internos.
+
+Relación con la ocultación de información:
+La interfaz pública permite ocultar los detalles internos de la clase, exponiendo solo lo necesario para usarla,
+ protegiendo así los datos y la implementación interna.
+
+### 3.  Brevemente: ¿Por qué hay que ser conscientes y diseñar con cuidado la interfaz pública de una clase? 
+¿Es fácil cambiarla?
+
+La interfaz pública define cómo otros usan la clase, por lo que debe diseñarse con cuidado para que sea clara y consistente.
+
+Cambiarla no es fácil, porque puede afectar a todas las partes del programa que dependen de ella.
+
+### 4. ¿Qué son las invariantes de clase y por qué la ocultación de información nos ayuda?
+
+Respuesta: Invariantes de clase: son reglas o condiciones que siempre deben cumplirse para que un objeto esté en un estado válido.
+
+Relación con la ocultación de información: al proteger los datos internos, se evita que otras clases los modifiquen directamente, garantizando que las invariantes se mantengan.
+
+### 5. Pon un ejemplo de una clase Punto en Java, con dos coordenadas, x e y, de tipo double, con un método calcularDistanciaAOrigen, y que haga uso de la ocultación de información.
+ ¿Cuál es la interfaz pública de la clase Punto? ¿Qué significa public y private?
+
+ Respuesta: public class Punto {
+    // Atributos privados (ocultación de información)
+    private double x;
+    private double y;
+
+    // Constructor público (interfaz pública)
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Métodos públicos (interfaz pública)
+    public double calcularDistanciaAOrigen() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    // Métodos getter y setter para acceder a x e y de forma controlada
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+}
+
+Interfaz pública de la clase:
+
+Todo lo que es public, es decir:
+
+El constructor Punto(double x, double y)
+
+Los métodos calcularDistanciaAOrigen(), getX(), setX(), getY(), setY()
+
+Esta es la forma en que otros objetos pueden usar la clase sin conocer los detalles internos.
+
+Significado de public y private:
+
+public: accesible desde cualquier otra clase.
+
+private: accesible solo dentro de la misma clase; protege los datos de accesos externos.
+
+### 6. En Java, ¿A quiénes se pueden aplicar los modificadores public o private?
+
+Respuesta: 
+
+Public: visible desde cualquier clase.
+
+Private: visible solo dentro de la propia clase.
+
+Se puede aplicar a atributos, métodos, constructores y clases internas.
+
+### 7. En POO, la visibilidad puede ser pública o privada, pero ¿existen más tipos de visibilidad?
+ ¿Qué ocurre en Java? ¿Y en otros lenguajes?
+
+ Respuesta: 
+
+ La visibilidad controla quién puede usar o modificar un miembro de la clase.
+
+Java ofrece cuatro niveles claros: public, private, protected y default.
+
+Otros lenguajes pueden variar: algunos son más estrictos (C++, C#), otros más flexibles (Python, Ruby)
+
+### 8. Responde: Los miembros de instancia privados de un objeto están ocultos para (a) otras clases o (b) otras instancias, aunque sean de la misma clase.
+ Pon un ejemplo añadiendo un método calcularDistanciaAPunto(Punto otro) y explica la respuesta.
+
+ Respuesta:
+
+ Privado = oculto para otras clases, visible dentro de la misma clase.
+
+Ejemplo: calcularDistanciaAPunto accede a los atributos privados de otra instancia de Punto porque está dentro de la misma clase.
+
+### 9. ¿Qué son los métodos "getter" y "setter" en los lenguajes orientados a objetos?
+
+Respuesta:
+
+Getter: método que permite obtener el valor de un atributo privado de un objeto.
+
+Setter: método que permite modificar el valor de un atributo privado, aplicando reglas si es necesario
+
+### 10. Cuando nos referimos a que la ocultación de información mejora la "seguridad" del programa,
+ ¿nos referimos a que no pueda ser "hackeado"?
+
+
+Respuesta: 
+
+Cuando hablamos de que la ocultación de información mejora la “seguridad” del programa en POO, no nos referimos a que prevenga ataques o hackeos externos.
+
+Se refiere a:
+
+Proteger los datos internos de la clase frente a errores o modificaciones accidentales desde otras partes del programa.
+
+Garantizar que los objetos mantengan un estado válido según sus reglas internas.
+
+Controlar cómo y cuándo se accede o modifica la información mediante la interfaz pública (getters, setters, métodos).
+
+### 11. ¿Qué diferencia hay entre miembro de instancia y miembro de clase? ¿Los miembros de clase también se pueden ocultar?
+
+Respuesta:
+
+Cuando hablamos de que la ocultación de información mejora la “seguridad” del programa en POO, no nos referimos a que prevenga ataques o hackeos externos.
+
+Se refiere a:
+
+Proteger los datos internos de la clase frente a errores o modificaciones accidentales desde otras partes del programa.
+
+Garantizar que los objetos mantengan un estado válido según sus reglas internas.
+
+Controlar cómo y cuándo se accede o modifica la información mediante la interfaz pública (getters, setters, métodos)
+
+### 12. Brevemente: ¿Tiene sentido que los constructores sean privados?
+
+Respuesta: Constructores privados se usan para evitar que se creen objetos desde fuera de la clase.
+
+Esto es útil, por ejemplo, en patrones Singleton, donde solo se permite una única instancia de la clase.
+
+### 13. 
