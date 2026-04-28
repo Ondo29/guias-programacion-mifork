@@ -1,0 +1,85 @@
+TEMA 2. Encapsulación
+1. En Programación Orientada a Objetos (POO), ¿Qué buscan la encapsulación y la ocultación de información? Enumera brevemente algunas ventajas de la ocultación de información.
+
+// RESPUESTA: 
+
+Buscan  que nuestros datos no puedan ser modificados tan facilemente, y que solamente puedan ser accedidos desde la misma clase.
+
+ventajas: 
+proteccion de datos
+mayor seguridad
+mayor control sobre el acceso.
+
+2. ¿Qué se entiende por la interfaz pública de un objeto o clase en POO? Describe brevemente cómo se relaciona con la ocultación de información.
+
+// RESPUESTA: 
+una interfaz es un “acuerdo” o contrato que define qué métodos debe tener una clase, pero sin implementar su comportamiento.
+La interfaz se relaciona con la ocultación de información porque actúa como la parte pública de un objeto, es decir,
+lo que se puede usar desde fuera, mientras que el interior (datos y detalles de implementación) permanece oculto.
+En POO, la interfaz define qué puede hacer un objeto, y la ocultación de información garantiza que no se pueda acceder directamente a cómo lo hace.
+
+3. Brevemente: ¿Por qué hay que ser conscientes y diseñar con cuidado la interfaz pública de una clase? ¿Es fácil cambiarla?
+
+// RESPUESTA:
+Hay que diseñar con cuidado la **interfaz pública** de una clase porque es la parte del código que otros programas o clases van a usar. 
+Si está mal diseñada, puede generar dependencias innecesarias, dificultar el uso o provocar errores.
+
+No es fácil cambiarla después, porque cualquier modificación puede afectar a todo el código que ya la esté utilizando. 
+Por eso, si se cambia, puede romper compatibilidad y obligar a modificar muchas partes del sistema.
+
+4. ¿Qué son las invariantes de clase y por qué la ocultación de información nos ayuda?
+
+//RESPUESTA:
+Las invariantes de clase son condiciones que siempre deben cumplirse para que un objeto sea válido durante toda su vida.
+La ocultación de información (encapsulamiento) ayuda a mantener esas invariantes porque:
+
+Evita que se modifiquen los datos directamente desde fuera de la clase
+Obliga a usar métodos controlados (como depositar() o retirar())
+Permite validar cambios antes de aplicarlos.
+
+5. Pon un ejemplo de una clase Punto en Java, con dos coordenadas, x e y, de tipo double, 
+con un método calcularDistanciaAOrigen, y que haga uso de la ocultación de información.
+¿Cuál es la interfaz pública de la clase Punto? ¿Qué significa public y private?
+
+//RESPUESTA:
+public class Punto {
+
+    // Atributos privados (ocultación de información)
+    private double x;
+    private double y;
+
+    // Constructor
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    //  Método público: interfaz de la clase
+    public double calcularDistanciaAOrigen() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    // Métodos getters (acceso controlado)
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+}
+
+6. En Java, ¿A quiénes se pueden aplicar los modificadores public o private?
+
+// RESPUESTA:
+Atributos, méodos y constructores.
+
+7. En POO, la visibilidad puede ser pública o privada, pero ¿existen más tipos de visibilidad? ¿Qué ocurre en Java? ¿Y en otros lenguajes?
+
+//RESPUESTA:
+
+
+
+
+
+
