@@ -77,6 +77,518 @@ Atributos, méodos y constructores.
 7. En POO, la visibilidad puede ser pública o privada, pero ¿existen más tipos de visibilidad? ¿Qué ocurre en Java? ¿Y en otros lenguajes?
 
 //RESPUESTA:
+Respuesta: 
+
+En Java
+
+Java tiene cuatro niveles de acceso:
+
+public → accesible desde cualquier lugar.
+
+private → solo dentro de la propia clase.
+
+protected → dentro del mismo paquete y en subclases.
+
+package-private (sin modificador) → solo dentro del mismo paquete.
+
+🔹 En otros lenguajes
+
+Muchos lenguajes ofrecen niveles similares:
+
+C++: public, private, protected.
+
+C#: añade internal (acceso dentro del mismo ensamblado).
+
+Python: no tiene modificadores estrictos, pero usa convenciones (por ejemplo, _atributo como indicador de uso interno).
+
+### 8. Responde: Los miembros de instancia privados de un objeto están ocultos para (a) otras clases o (b) otras instancias, aunque sean de la misma clase. 
+Pon un ejemplo añadiendo un método `calcularDistanciaAPunto(Punto otro)` y explica la respuesta.
+
+Respuesta: 
+
+Están ocultos para otras clases,
+pero NO están ocultos para otras instancias de la misma clase.
+
+En Java, los miembros private solo pueden ser accedidos desde código de la misma clase, aunque sea sobre otra instancia.
+
+ejemplo: 
+public class Punto {
+
+    private double x;
+    private double y;
+
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double calcularDistanciaAPunto(Punto otro) {
+        double dx = this.x - otro.x;   // Acceso permitido
+        double dy = this.y - otro.y;   // aunque sean private
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
+
+### 9. ¿Qué son los métodos "getter" y "setter" en los lenguajes orientados a objetos?
+
+Respuesta: 
+
+Getter: devuelve el valor de un atributo privado.
+Setter: permite cambiar el valor de un atributo privado, normalmente validando la información antes.
+
+### 10. Cuando nos referimos a que la ocultación de información mejora la "seguridad" del programa, 
+¿nos referimos a que no pueda ser "hackeado"?
+
+Respuesta:
+
+No exactamente. En POO, cuando decimos que la ocultación de información mejora la “seguridad”, nos referimos a la protección de los datos internos del objeto frente a usos indebidos desde otras partes del código, 
+no a seguridad frente a ataques externos o hackers.
+
+### 11. Qué diferencia hay entre **miembro de instancia** y **miembro de clase**? 
+¿Los miembros de clase también se pueden ocultar?
+
+RESPUESTA: 
+
+Miembro de instancia
+
+Pertenece a cada objeto creado de la clase.
+
+Cada objeto tiene su propio valor de ese atributo.
+
+Se accede mediante una instancia: objeto.atributo.
+
+🔹 Miembro de clase (o estático)
+
+Pertenece a la clase en sí, no a instancias individuales.
+
+Todos los objetos comparten el mismo valor.
+
+Se declara con static y se accede: Clase.atributo.
+
+🔹 Ocultación
+
+Sí, los miembros de clase también se pueden ocultar usando private.
+
+### 12. Brevemente: ¿Tiene sentido que los constructores sean privados?
+
+RESPUESTA: 
+
+Un constructor privado impide que otros creen instancias directamente y se usa, 
+por ejemplo, en clases singleton o cuando se quiere controlar la creación de objetos mediante métodos estáticos.
+
+### 13. ¿Cómo se indican los **miembros de clase** en Java? Pon un ejemplo, en la clase `Punto` definida anteriormente, para que incluya miembros de clase que permitan saber cuáles son los valores `x` e `y` máximos 
+que se han establecido en todos los puntos que se hayan creado hasta el momento.
+
+RESPUESTA:
+
+En Java, los miembros de clase se indican con la palabra clave static. Esto significa que pertenecen a la clase, no a cada instancia, 
+y todos los objetos comparten el mismo valor.
+
+EJEMPLO:
+
+public class Punto {
+
+    private double x;
+    private double y;
+
+    // Miembros de clase (compartidos por todos los objetos)
+    private static double maxX = Double.NEGATIVE_INFINITY;
+    private static double maxY = Double.NEGATIVE_INFINITY;
+
+    // Constructor
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+
+        // Actualizar los máximos si es necesario
+        if (x > maxX) {
+            maxX = x;
+        }
+        if (y > maxY) {
+            maxY = y;
+        }
+    }
+
+    // Métodos de instancia
+    public double calcularDistanciaAOrigen() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    // Métodos de clase para consultar los máximos
+    public static double getMaxX() {
+        return maxX;
+    }
+
+    public static double getMaxY() {
+        return maxY;
+    }
+}
+### 14. Como sería un método factoría dentro de la clase `Punto` para construir un `Punto` a partir de dos coordenadas, pero que las redondee al entero más cercano. 
+Escribe sólo el código del método, no toda la clase ¿Has usado `static`?
+
+RESPUESTA:
+
+Sí, un método factoría normalmente es estático, porque se llama sobre la clase y no sobre una instancia existente.
+
+ejemplo:
+
+public static Punto crearRedondeado(double x, double y) {
+    int xRedondeado = (int) Math.round(x);
+    int yRedondeado = (int) Math.round(y);
+    return new Punto(xRedondeado, yRedondeado);
+}
+
+### 15.  Cambia la implementación de `Punto`. En vez de dos `double`,
+ emplea un array interno de dos posiciones, intentando no modificar la interfaz pública de la clase.
+
+ RESPUESTA: 
+
+ Perfecto. Podemos cambiar la implementación interna para usar un array de dos elementos para almacenar las coordenadas, 
+ sin modificar la interfaz pública, manteniendo los métodos existentes.
+
+ ### 16. Si un atributo va a tener un método "getter" y "setter" públicos, ¿no es mejor declararlo público? ¿Cuál es la convención más habitual sobre los atributos, que sean públicos o privados?
+  ¿Tiene esto algo que ver con las "invariantes de clase"?
+
+  RESPUESTA:
+Convención habitual
+
+En la POO se acostumbra a declarar todos los atributos como private y usar métodos getters y setters públicos para acceder o modificarlos. Esto mantiene la ocultación de información y permite controlar cómo se leen o cambian los valores.
+
+🔹 Relación con invariantes de clase
+
+Sí tiene relación:
+
+Los atributos privados solo se modifican mediante métodos controlados.
+
+Esto permite validar valores y
+ garantizar que las invariantes de clase se cumplan, evitando que un objeto quede en un estado inválido.
+
+### 17. ¿Qué significa que una clase sea **inmutable**? ¿qué es un método modificador? ¿Un método modificador es siempre un "setter"? 
+ ¿Tiene ventajas que una clase sea inmutable?
+
+ ¿Qué significa que una clase sea **inmutable**? ¿qué 
+ es un método modificador? ¿Un método modificador es siempre un "setter"? ¿Tiene ventajas que una clase sea inmutable?
+
+
+### 18. ¿Es recomendable incluir métodos "setter" siempre y como convención?
+
+RESPUESTA:
+
+Razones
+
+Los setters permiten cambiar el estado del objeto, lo que puede romper invariantes de clase si no se controlan correctamente.
+
+Para clases inmutables, no se usan setters.
+
+Algunos atributos solo deben establecerse al crear el objeto (en el constructor) y luego no deben modificarse.
+
+🔹 Convención habitual
+
+Atributos privados + getters públicos.
+
+Solo incluir setters si realmente se necesita que el atributo cambie.
+
+Esto protege la integridad del objeto y mantiene la consistencia de sus dato.
+
+### 19. ¿La clase `String` en Java es mutable o inmutable? ¿Qué ocurre al concatenar dos cadenas? ¿Qué debemos hacer 
+si vamos a hacer una operación que implique concatenar muchas veces para construir paso a paso una cadena muy larga?
+
+RESPUESTA: 
+
+En Java, la clase String es inmutable, lo que significa que una vez creado un objeto String, su contenido no puede cambiar.
+
+🔹 Concatenación
+
+Cuando haces algo como:
+
+String s = "Hola";
+s = s + " Mundo";
+
+Se crea un nuevo objeto String con el valor "Hola Mundo".
+
+La cadena original "Hola" no cambia.
+
+🔹 Muchas concatenaciones
+
+Si vas a construir una cadena grande paso a paso, concatenar con + repetidamente es ineficiente.
+
+Solución: usar StringBuilder (mutable):
+
+StringBuilder sb = new StringBuilder();
+sb.append("Hola");
+sb.append(" Mundo");
+String resultado = sb.toString();
+
+StringBuilder modifica el mismo objeto internamente.
+
+Es mucho más rápido para concatenar muchas veces.
+
+### 20. En POO ¿Cómo se comparan objetos de una misma clase? ¿Por su contenido o por su identidad? ¿Qué es el método equals en Java? ¿Qué hace por defecto? 
+¿Cómo se deben comparar dos cadenas en Java? 
+
+RESPUESTA:
+
+En POO, la comparación de objetos puede ser por identidad o por contenido, y depende de cómo se haga:
+
+🔹 Comparación por identidad
+
+Se pregunta si dos referencias apuntan al mismo objeto en memoria.
+
+En Java se usa == para esto:
+
+String s1 = "Hola";
+String s2 = s1;
+System.out.println(s1 == s2); // true, misma referencia
+🔹 Comparación por contenido
+
+Se pregunta si dos objetos tienen los mismos valores internos, independientemente de si son distintos objetos.
+
+Para esto se usa el método equals().
+
+En Java:
+
+equals() es un método de la clase Object.
+
+Por defecto, compara identidad (igual que ==).
+
+Pero muchas clases sobrescriben equals() para comparar contenido.
+
+🔹 Ejemplo con cadenas
+
+En Java, Strings sobrescriben equals(), por eso para comparar el contenido de dos cadenas se hace:
+
+String s1 = "Hola";
+String s2 = new String("Hola");
+
+System.out.println(s1 == s2);      // false, diferentes objetos
+System.out.println(s1.equals(s2)); // true, mismo contenido
+
+✅ Resumen:
+
+== → identidad (misma referencia).
+
+equals() → contenido (si está correctamente sobrescrito).
+
+Para Strings y la mayoría de objetos donde importa el valor, usar equals() para comparar contenido.
+
+Consigue respuestas más inteligentes, carga archivos e imágenes y mucho más.
+Iniciar sesión
+Registrarse gratuitamente
+
+### 21. ¿Qué son las clases "wrapper" en un lenguaje de programación orientado a objetos? ¿Cómo se hace? ¿Es un proceso automático? 
+¿Qué ventajas tienen? ¿Todos los lenguajes orientados a objetos tienen tipos primitivos y necesitan wrappers?
+
+RESPUESTA: 
+
+Clases “wrapper”
+
+En POO, una clase wrapper es una clase que envuelve un tipo de dato primitivo, permitiéndole comportarse como un objeto.
+
+Ejemplo en Java:
+
+int → Integer
+
+double → Double
+
+boolean → Boolean
+
+Esto permite usar los primitivos en colecciones, métodos que requieren objetos, y aprovechar métodos adicionales.
+
+🔹 Cómo se hace y si es automático
+
+Se puede crear explícitamente:
+
+Integer i = new Integer(5);  // explícito
+
+O mediante autoboxing, que Java hace automáticamente:
+
+Integer i = 5;  // autoboxing: int → Integer automáticamente
+
+El proceso inverso se llama unboxing:
+
+int j = i;  // Integer → int automáticamente
+🔹 Ventajas
+
+Permite usar tipos primitivos como objetos.
+
+Se pueden almacenar en colecciones genéricas (ArrayList<Integer>).
+
+Proporciona métodos útiles para conversión y comparación.
+
+🔹 ¿Todos los lenguajes necesitan wrappers?
+
+No necesariamente:
+
+Algunos lenguajes, como Python o Ruby, no distinguen entre primitivos y objetos; todos son objetos, por lo que no necesitan wrappers.
+
+Java y C# sí tienen tipos primitivos y usan wrappers para integrarlos con el sistema de objetos
+
+### 22. ¿En POO qué es un **tipo de dato enumerado**? ¿En Java, un tipo de dato enumerado es una clase?
+ ¿Qué ventajas tienen en términos de encapsulación los enumerados en Java?
+
+ RESPUESTA:
+
+ Tipo de dato enumerado (enum)
+
+En POO, un tipo de dato enumerado es un tipo que define un conjunto finito y fijo de valores posibles para una variable.
+
+Por ejemplo, días de la semana, estados de un semáforo, niveles de acceso.
+
+Permite que una variable solo tome valores predefinidos, evitando errores de asignación.
+
+🔹 Enum en Java
+
+Sí, en Java un enum es una clase especial:
+
+Cada valor enumerado es en realidad una instancia de esa clase.
+
+Se pueden añadir atributos y métodos a los enums, como si fueran clases normales:
+
+public enum Dia {
+    LUNES, MARTES, MIERCOLES, JUEVES, VIERNES;
+}
+🔹 Ventajas en términos de encapsulación
+
+Valores controlados: solo se pueden usar los valores definidos dentro del enum.
+
+Ocultación de implementación: los detalles internos del enum están ocultos; solo se exponen los valores públicos.
+
+Métodos propios: se pueden agregar métodos al enum para operaciones relacionadas, sin exponer cómo funcionan internamente.
+
+Seguridad y claridad: reduce errores de asignación y hace el código más legible.
+
+### 23. Crea un tipo enumerado en Java que se llame `Mes`, con doce posibles instancias y que además proporcione métodos para obtener cuántos días tiene ese mes, 
+el ordinal de ese mes en el año (1-12), empleando atributos privados y constructores del tipo enumerado.
+
+RESPUESTA:
+
+Aquí tienes un ejemplo completo de un enum Mes en Java con atributos privados, constructor y métodos para obtener los días y el ordinal del mes:
+
+public enum Mes {
+
+    ENERO(31),
+    FEBRERO(28),  // No se considera año bisiesto en este ejemplo
+    MARZO(31),
+    ABRIL(30),
+    MAYO(31),
+    JUNIO(30),
+    JULIO(31),
+    AGOSTO(31),
+    SEPTIEMBRE(30),
+    OCTUBRE(31),
+    NOVIEMBRE(30),
+    DICIEMBRE(31);
+
+    // Atributo privado
+    private final int dias;
+
+    // Constructor del enum (siempre privado)
+    private Mes(int dias) {
+        this.dias = dias;
+    }
+
+    // Método para obtener los días del mes
+    public int getDias() {
+        return dias;
+    }
+
+    // Método para obtener el ordinal del mes en el año (1-12)
+    public int getNumero() {
+        return this.ordinal() + 1; // ordinal() empieza en 0
+    }
+}
+🔹 Cómo usarlo
+Mes mes = Mes.MARZO;
+System.out.println(mes.getDias());    // 31
+System.out.println(mes.getNumero());  // 3
+🔹 Notas importantes
+
+Los atributos son privados, lo que aplica encapsulación.
+
+Cada instancia del enum es constante e inmutable.
+
+ordinal() es un método interno de los enums que devuelve la posición (0-11), por eso sumamos 1 para el número de mes.
+
+### 24. Añade a la clase `Mes` del ejercicio anterior cuatro métodos para devolver si ese mes tiene algunos días de invierno, primavera, verano u otoño, indicando con un booleano el hemisferio (norte o sur, parámetro `enHemisferioNorte`). Es decir: `esDePrimavera(boolean esHemisferioNorte)`, `esDeVerano(boolean esHemisferioNorte)`
+, `esDeOtoño(boolean esHemisferioNorte)`, `esDeInvierno(boolean esHemisferioNorte)`
+
+RESPUESTA:
+
+Perfecto. Podemos añadir los cuatro métodos al enum Mes, usando un parámetro booleano que indica si estamos en el hemisferio norte (true) o sur (false). Cada método devuelve true si el mes pertenece a esa estación en el hemisferio indicado.
+
+public enum Mes {
+
+    ENERO(31),
+    FEBRERO(28),
+    MARZO(31),
+    ABRIL(30),
+    MAYO(31),
+    JUNIO(30),
+    JULIO(31),
+    AGOSTO(31),
+    SEPTIEMBRE(30),
+    OCTUBRE(31),
+    NOVIEMBRE(30),
+    DICIEMBRE(31);
+
+    private final int dias;
+
+    private Mes(int dias) {
+        this.dias = dias;
+    }
+
+    public int getDias() {
+        return dias;
+    }
+
+    public int getNumero() {
+        return this.ordinal() + 1;
+    }
+
+    // ---------- Métodos de estación ----------
+    
+    public boolean esDePrimavera(boolean esHemisferioNorte) {
+        if (esHemisferioNorte) {
+            return this == MARZO || this == ABRIL || this == MAYO;
+        } else {
+            return this == SEPTIEMBRE || this == OCTUBRE || this == NOVIEMBRE;
+        }
+    }
+
+    public boolean esDeVerano(boolean esHemisferioNorte) {
+        if (esHemisferioNorte) {
+            return this == JUNIO || this == JULIO || this == AGOSTO;
+        } else {
+            return this == DICIEMBRE || this == ENERO || this == FEBRERO;
+        }
+    }
+
+    public boolean esDeOtoño(boolean esHemisferioNorte) {
+        if (esHemisferioNorte) {
+            return this == SEPTIEMBRE || this == OCTUBRE || this == NOVIEMBRE;
+        } else {
+            return this == MARZO || this == ABRIL || this == MAYO;
+        }
+    }
+
+    public boolean esDeInvierno(boolean esHemisferioNorte) {
+        if (esHemisferioNorte) {
+            return this == DICIEMBRE || this == ENERO || this == FEBRERO;
+        } else {
+            return this == JUNIO || this == JULIO || this == AGOSTO;
+        }
+    }
+}
+🔹 Uso de ejemplo
+Mes mes = Mes.MARZO;
+
+System.out.println(mes.esDePrimavera(true));  // true, hemisferio norte
+System.out.println(mes.esDePrimavera(false)); // false, hemisferio sur
+System.out.println(mes.esDeOtoño(false));     // true, hemisferio sur
+
+✅ Con esto, la clase mantiene atributos privados y métodos de estación que encapsulan la lógica de qué meses pertenecen a cada estación según el hemisferio.
+
+
 
 
 
