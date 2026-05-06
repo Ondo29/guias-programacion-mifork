@@ -1,0 +1,45 @@
+TEMA 6. Genericidad
+1. Empleando void* en C o Object en Java, pon un ejemplo de una estructura de datos, que empleando un array primitivo, permita alojar cualquier tipo de dato.
+
+Respuesta: 
+
+Ejemplo en C (array de void*)
+
+Un “vector genérico” simple que puede almacenar cualquier tipo de dato usando punteros.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    void **data;      // array de punteros genéricos
+    size_t size;      // elementos usados
+    size_t capacity;  // capacidad total
+} Vector;
+
+Vector* vector_create(size_t capacity) {
+    Vector* v = malloc(sizeof(Vector));
+    v->data = malloc(sizeof(void*) * capacity);
+    v->size = 0;
+    v->capacity = capacity;
+    return v;
+}
+
+void vector_push(Vector* v, void* element) {
+    if (v->size < v->capacity) {
+        v->data[v->size++] = element;
+    }
+}
+
+void* vector_get(Vector* v, size_t index) {
+    if (index < v->size) {
+
+2. Brevemente, ¿Qué significa la programación genérica? ¿Es el ejemplo anterior un ejemplo básico de programación genérica?
+
+Respuesta: 
+
+La programación genérica es un estilo de programación que permite escribir código que funciona con cualquier tipo de dato, sin tener que duplicarlo para cada tipo específico. En lugar de fijar tipos concretos (como int, double, String), se usan parámetros de tipo o mecanismos equivalentes para que el mismo código sea reutilizable.
+
+3. Indica los problemas respecto al chequeo de tipos, de emplear void* o Object cuando se crean estructuras de datos genéricas.
+
+Respuesta:
+
