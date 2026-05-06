@@ -1,0 +1,342 @@
+Tema 5. Polimorfismo
+
+1. Brevemente, ¿qué es el "polimorfismo" y para qué sirve en programación orientada a objetos? ¿qué es la "sobreescritura" de métodos?
+
+Respuesta: 
+
+Polimorfismo significa “muchas formas”. Permite que distintos objetos respondan al mismo mensaje (método) de maneras diferentes.
+Por ejemplo, si tienes una clase base Animal con un método hacerSonido(), cada subclase (Perro, Gato) puede implementar ese método de forma distinta.
+
+?? Sirve para escribir código más flexible y reutilizable, porque puedes trabajar con objetos distintos de forma uniforme.
+
+Sobreescritura de métodos (overriding) ocurre cuando una clase hija redefine un método que ya existe en su clase padre, manteniendo el mismo nombre, parámetros y tipo de retorno (o compatibles).
+
+Ejemplo:
+
+Animal.hacerSonido() ? genérico
+Perro.hacerSonido() ? “guau”
+Gato.hacerSonido() ? “miau.
+
+2. En qué consiste la "ligadura dinámica" o "enlace tardío"? ¿qué relación tiene con el polimorfismo? ¿hay que indicarlos explícitamente al programar o depende esto del lenguaje? Compara C++ y Java. Indicalo después también para Python.
+
+Respuesta: 
+
+Ligadura dinámica (o enlace tardío)
+
+La ligadura dinámica es el mecanismo por el cual la decisión de qué método ejecutar se toma en tiempo de ejecución, no en tiempo de compilación.
+
+En otras palabras: aunque una variable esté declarada como un tipo general (por ejemplo, Animal), el programa decide en ejecución si llama a Perro.hacerSonido() o Gato.hacerSonido() según el objeto real.
+
+?? Relación con el polimorfismo
+
+Está directamente relacionada con el polimorfismo en tiempo de ejecución (polimorfismo dinámico).
+
+El polimorfismo permite tratar objetos distintos de forma uniforme.
+La ligadura dinámica es el mecanismo que hace posible que, pese a usar una referencia genérica, se ejecute el comportamiento específico correcto.
+
+3. Pon un ejemplo sencillo en Java, de un Soldado, con un método saluda, con dos subclases: Zapador y Artillero, donde Zapador sobreescribe el método saludar, sustituyendo por completo su comportamiento. Ilustra el funcionamiento del polimorfismo creando un array de Soldados de dos tipos y luego recorriéndolo empleando referencias de tipo Soldado y llamando a saludar.
+
+Respuesta: 
+
+Clase base: Soldado
+class Soldado {
+    void saludar() {
+        System.out.println("Soldado: a sus órdenes");
+    }
+}
+?? Subclase: Zapador (sobreescribe completamente)
+class Zapador extends Soldado {
+    @Override
+    void saludar() {
+        System.out.println("Zapador: listo para desactivar explosivos");
+    }
+}
+?? Subclase: Artillero (hereda comportamiento)
+class Artillero extends Soldado {
+    // No sobrescribe saludar(), usa el de Soldado
+}
+?? Uso del polimorfismo
+public class Main {
+    public static void main(String[] args) {
+
+        Soldado[] ejercito = new Soldado[4];
+
+        ejercito[0] = new Soldado();
+        ejercito[1] = new Zapador();
+        ejercito[2] = new Artillero();
+        ejercito[3] = new Zapador();
+
+        for (Soldado s : ejercito) {
+            s.saludar();
+        }
+    }
+}
+
+4 . Si sobreescribo un método, ¿puedo invocar el método base para trabajar a partir de su resultado? Haz que zapador cambie ligeramente la forma de saludar, que salude de forma normal, tal cual hace el soldado base, pero que además añada un "ZAPADOR A SUS ORDENES" ¿qué palabra clave del lenguaje has usado para invocar al método de la clase base?
+
+Respuesta: 
+
+Imagina una clase base Soldado:
+
+class Soldado {
+    void saludar() {
+        System.out.println("A sus órdenes");
+    }
+}
+
+Y una clase Zapador que sobrescribe el método:
+
+class Zapador extends Soldado {
+    @Override
+    void saludar() {
+        super.saludar(); // invoca el método de la clase base
+        System.out.println("ZAPADOR A SUS ÓRDENES");
+    }
+
+5. Al sobreescribir un método en Java, ¿qué restricciones existen sobre los tipos de los parámetros y el tipo de retorno? ¿Qué diferencia hay entre sobreescritura (overriding) y sobrecarga (overloading)? ¿Para qué sirve la anotación @Override y por qué es recomendable usarla siempre?
+
+Respuesta: 
+
+1) Restricciones en parámetros y tipo de retorno al sobrescribir
+?? Parámetros
+Deben ser exactamente los mismos que en el método de la clase base.
+No puedes cambiar su número, tipo ni orden.
+Si cambias los parámetros, ya no es sobreescritura, sino sobrecarga.
+
+Ejemplo válido:
+
+class A {
+    void saludar(String nombre) {}
+}
+
+class B extends A {
+    @Override
+    void saludar(String nombre) {}
+}
+?? Tipo de retorno
+
+Aquí hay una excepción importante:
+
+El tipo de retorno debe ser igual o covariante.
+
+?? Esto significa:
+
+Puede ser el mismo tipo, o
+Un subtipo (clase hija del tipo original)
+
+Ejemplo:
+
+class Animal {}
+class Perro extends Animal {}
+
+class A {
+    Animal obtener() { return new Animal(); }
+}
+
+class B extends A {
+    @Override
+    Perro obtener() { return new Perro(); } // válido (covariante)
+}
+
+? No válido:
+
+class B extends A {
+    @Override
+    String obtener() { return "error"; } // incompatible
+}
+
+6. Entonces, cuando se estudia Java, ¿se emplea el polimorfismo desde el principio? Por ejemplo, sobreescribiendo toString o sobreescribiendo equals, ¿ya estoy usando polimorfismo?
+
+Respuesta: 
+
+1) ¿Se usa polimorfismo desde el principio en Java?
+
+En la práctica, sí, pero de forma gradual:
+
+Desde los primeros temas aprendes clases y objetos.
+Poco después ya estás usando sobreescritura (overriding) sin llamarlo “polimorfismo avanzado”.
+Más adelante se formaliza el concepto como:
+?? “una referencia de tipo padre que ejecuta comportamientos de subclases en tiempo de ejecución”
+
+Es decir: el polimorfismo no aparece de golpe, sino que lo vas usando antes de estudiarlo formalmente.
+
+2) ¿Sobrescribir toString() o equals() es polimorfismo?
+
+?? Sí, es polimorfismo de subtipo (runtime polymorphism).
+
+Cuando haces esto:
+
+class Persona {
+    String nombre;
+
+    @Override
+    public String toString() {
+        return "Persona: " + nombre;
+    }
+}
+
+7. ¿Qué es una "clase abstracta"? ¿Qué es un "método abstracto"? ¿Puedo crear instancias de una clase abstracta? Pongamos un ejemplo en Java: Redefinamos Soldado, hagamos que, además del método saluda que ya tenía, tenga un método atacar, que sea abstracto y que cada tipo de soldado haga su acción cuando se le pida atacar. ¿Donde debemos poner abstract?
+
+Respuestas: 
+
+1) ¿Qué es una clase abstracta en Java?
+
+Una clase abstracta es una clase que:
+
+No se puede instanciar directamente.
+Sirve como base común para otras clases.
+Puede tener métodos normales (con código) y métodos abstractos (sin código).
+
+Se usa cuando quieres definir una “idea general” (por ejemplo, Soldado), pero no quieres que exista como objeto concreto.
+
+2) ¿Qué es un método abstracto?
+
+Un método abstracto:
+
+No tiene implementación (no tiene cuerpo { }).
+Solo define la firma del método.
+Obliga a las clases hijas a implementarlo.
+
+Ejemplo:
+
+public abstract void atacar();
+
+8.  ¿Qué efecto tiene la palabra clave final sobre métodos y clases en Java? ¿Cómo se relaciona con el polimorfismo? ¿Conoces algún ejemplo de clase final en la propia API estándar de Java?
+
+Respuesta: 
+
+1) final en métodos
+
+Un método final:
+
+? No puede ser sobrescrito (overridden) en subclases.
+? Mantiene su comportamiento fijo en toda la jerarquía.
+
+Ejemplo:
+
+class Soldado {
+    public final void descansar() {
+        System.out.println("El soldado descansa");
+    }
+}
+class Infanteria extends Soldado {
+    // ? ERROR: no se puede sobrescribir
+    public void descansar() {
+        System.out.println("...");
+    }
+}
+
+9.  En Java, qué son las "interfaces"? ¿Son como clases abstractas? ¿Una clase puede implementar más de una interfaz?
+
+Respuesta: 
+
+1) ¿Qué son las interfaces en Java?
+
+Una interfaz en Java es un tipo que define un contrato: especifica qué debe hacer una clase, pero no cómo lo hace (al menos en su forma clásica).
+
+En esencia, una interfaz contiene:
+
+Métodos abstractos (sin implementación, tradicionalmente)
+Constantes (public static final)
+Y en versiones modernas de Java, también puede tener default y static methods
+
+Ejemplo básico:
+
+interface Volador {
+    void volar();
+}
+
+10. Vamos a poner un ejemplo nuevo con polimorfismo. Queremos implementar una clase Punto, con un método calcularDistanciaA, que permite calcular la distancia a otro Punto. Sin embargo, como queremos trabajar con puntos 2D y 3D, haz que ese método sea abstracto y haya dos implementaciones de ese cálculo de distancia. Emplea instanceof y downcasting para verificar que se recibe un punto compatible y poder calcular correctamente la distancia siempre entre puntos del mismo subtipo. Aprovecha este diseño para crear ahora una clase Linea, que acepta Punto, sin saber de qué tipo es, y es capaz de dar su longitud independientemente de las dimensiones de sus puntos (las cuales desconoce).
+
+Respuesta: 
+
+La idea base es:
+
+Punto es abstracta.
+Punto2D y Punto3D heredan de Punto.
+calcularDistanciaA es abstracto en la clase base.
+Cada subclase solo calcula distancia con su propio tipo (verificado con instanceof).
+Linea trabaja con Punto sin saber si son 2D o 3D.
+1. Clase abstracta Punto
+public abstract class Punto {
+    public abstract double calcularDistanciaA(Punto otro);
+}
+2. Punto 2D
+public class Punto2D extends Punto {
+    private double x, y;
+
+    public Punto2D(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public double calcularDistanciaA(Punto otro) {
+        if (!(otro instanceof Punto2D)) {
+            throw new IllegalArgumentException("Incompatible: no es un Punto2D");
+        }
+
+        Punto2D p = (Punto2D) otro;
+
+        double dx = this.x - p.x;
+        double dy = this.y - p.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
+3. Punto 3D
+public class Punto3D extends Punto {
+    private double x, y, z;
+
+    public Punto3D(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    @Override
+    public double calcularDistanciaA(Punto otro) {
+        if (!(otro instanceof Punto3D)) {
+            throw new IllegalArgumentException("Incompatible: no es un Punto3D");
+        }
+
+        Punto3D p = (Punto3D) otro;
+
+        double dx = this.x - p.x;
+        double dy = this.y - p.y;
+        double dz = this.z - p.z;
+
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+}
+4. Clase Linea (agnóstica a la dimensión)
+public class Linea {
+    private Punto inicio;
+    private Punto fin;
+
+    public Linea(Punto inicio, Punto fin) {
+        this.inicio = inicio;
+        this.fin = fin;
+    }
+
+    public double longitud() {
+        return inicio.calcularDistanciaA(fin);
+    }
+}
+5. Ejemplo de uso
+public class Main {
+    public static void main(String[] args) {
+
+        Punto p1 = new Punto2D(0, 0);
+        Punto p2 = new Punto2D(3, 4);
+
+        Linea l1 = new Linea(p1, p2);
+        System.out.println("Longitud 2D: " + l1.longitud()); // 5.0
+
+        Punto q1 = new Punto3D(0, 0, 0);
+        Punto q2 = new Punto3D(1, 2, 2);
+
+        Linea l2 = new Linea(q1, q2);
+        System.out.println("Longitud 3D: " + l2.longitud()); // 3.0
+    }
+}
