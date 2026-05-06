@@ -1,0 +1,1301 @@
+{\rtf1\fbidis\ansi\ansicpg1252\deff0\nouicompat\deflang3082{\fonttbl{\f0\fnil\fcharset0 Courier New;}{\f1\fnil Courier New;}{\f2\fnil\fcharset1 Segoe UI Symbol;}{\f3\fnil\fcharset1 Cambria Math;}{\f4\fnil\fcharset1 Segoe UI Symbol;}{\f5\fnil\fcharset1 Segoe UI Emoji;}{\f6\fnil\fcharset0 Cambria Math;}{\f7\fnil Cambria Math;}{\f8\fnil\fcharset0 Segoe UI Symbol;}{\f9\fnil Segoe UI Symbol;}{\f10\fnil\fcharset0 Segoe UI Emoji;}{\f11\fnil Segoe UI Emoji;}}
+{\*\generator Riched20 10.0.19041}{\*\mmathPr\mmathFont3\mwrapIndent1440 }\viewkind4\uc1 
+\pard\f0\fs22 1. En C, podemos crear estructuras mayores componiendo unas con otras, que suelen describirse como "A tiene-un/tiene-varios B". Pon un ejemplo, empleando struct, de una l\'ednea de puntos, donde puntos tienen dos coordenadas (x e y), y la l\'ednea esta hecha de dos puntos. Incluye una funci\'f3n para calcular la distancia entre puntos y otra para hallar la longitud de una l\'ednea.\par
+\par
+respuesta:\par
+\par
+#include <stdio.h>\par
+#include <math.h>\par
+\par
+/* Estructura que representa un punto */\par
+typedef struct \{\par
+    double x;\par
+    double y;\par
+\} Punto;\par
+\par
+/* Estructura que representa una l\'ednea formada por dos puntos */\par
+typedef struct \{\par
+    Punto p1;\par
+    Punto p2;\par
+\} Linea;\par
+\par
+/* Funci\'f3n para calcular la distancia entre dos puntos */\par
+double distancia(Punto a, Punto b) \{\par
+    return sqrt((b.x - a.x) * (b.x - a.x) +\par
+                (b.y - a.y) * (b.y - a.y));\par
+\}\par
+\par
+/* Funci\'f3n para calcular la longitud de una l\'ednea */\par
+double longitudLinea(Linea l) \{\par
+    return distancia(l.p1, l.p2);\par
+\}\par
+\par
+/* Ejemplo de uso */\par
+int main() \{\par
+    Punto A = \{0.0, 0.0\};\par
+    Punto B = \{3.0, 4.0\};\par
+\par
+    Linea L = \{A, B\};\par
+\par
+    printf("Distancia entre puntos: %.2f\\n", distancia(A, B));\par
+    printf("Longitud de la l\'ednea: %.2f\\n", longitudLinea(L));\par
+\par
+    return 0;\par
+\}\par
+\par
+\par
+2. Ahora transforma ese ejemplo a orientaci\'f3n a objetos con Java, para tener un primer ejemplo de composici\'f3n en orientaci\'f3n a objetos. Crea una clase Punto, y una clase Linea. La clase Punto debe tener un m\'e9todo para calcular distancia a otro Punto y Linea debe tener un m\'e9todo para calcular su longitud. Gracias a la ocultaci\'f3n de informaci\'f3n, supera a C, garantizando que los puntos sean inmutables, al igual que la l\'ednea, que una vez creada, no queremos que se modifique de qu\'e9 a qu\'e9 puntos va dicha l\'ednea.\par
+\par
+Respuesta: \par
+\par
+public final class Punto \{\par
+    private final double x;\par
+    private final double y;\par
+\par
+    public Punto(double x, double y) \{\par
+        this.x = x;\par
+        this.y = y;\par
+    \}\par
+\par
+    public double getX() \{\par
+        return x;\par
+    \}\par
+\par
+    public double getY() \{\par
+        return y;\par
+    \}\par
+\par
+    // M\'e9todo de instancia: distancia a otro punto\par
+    public double distanciaA(Punto otro) \{\par
+        double dx = otro.x - this.x;\par
+        double dy = otro.y - this.y;\par
+        return Math.sqrt(dx * dx + dy * dy);\par
+    \}\par
+\}\par
+\par
+\par
+public final class Linea \{\par
+    private final Punto p1;\par
+    private final Punto p2;\par
+\par
+    public Linea(Punto p1, Punto p2) \{\par
+        this.p1 = p1;\par
+        this.p2 = p2;\par
+    \}\par
+\par
+    public Punto getP1() \{\par
+        return p1;\par
+    \}\par
+\par
+    public Punto getP2() \{\par
+        return p2;\par
+    \}\par
+\par
+    // Longitud de la l\'ednea usando delegaci\'f3n a Punto\par
+    public double longitud() \{\par
+        return p1.distanciaA(p2);\par
+    \}\par
+\}\par
+\par
+\par
+3. \'bfQu\'e9 significa la multiplicidad en la composici\'f3n? En el ejemplo anterior, \'bfcu\'e1l es la multiplicidad entre Linea y Punto? Ind\'edcalo expresando la multiplicidad en ambas direcciones, de Linea a Punto y de Punto a Linea.\par
+\par
+Respuesta: \par
+\par
+La multiplicidad en una relaci\'f3n de composici\'f3n (o asociaci\'f3n en general) indica cu\'e1ntas instancias de una clase pueden estar relacionadas con una instancia de otra clase.\par
+\par
+No habla de \f1\ldblquote\f0 propiedad\f1\rdblquote  \f0 del lenguaje, sino de un concepto de modelado UML: cu\'e1ntos objetos participan en la relaci\'f3n.\par
+\par
+\f2\u-10179?\u-9012?\f1  \f0 En el ejemplo: Linea y Punto\par
+\par
+Una Linea est\'e1 compuesta por exactamente dos Punto:\par
+\par
+p1\par
+p2\par
+\par
+Y cada Punto (en este modelo concreto) puede pertenecer a una \'fanica l\'ednea si asumimos composici\'f3n estricta.\par
+\par
+\f2\u-10179?\u-8959?\f1  \f0 Multiplicidad de Linea \f3\u8594?\f1  \f0 Punto\par
+\par
+\f2\u-10179?\u-9143?\f1  \f0 Una Linea tiene:\par
+\par
+exactamente 2 puntos\par
+\par
+Se expresa como:\par
+\par
+Linea \f4\u9472?\u9472?\u9472?\f1  \f0 2 \f4\u9472?\u9472?\u9472?\f1  \f0 Punto\par
+\par
+o en notaci\'f3n UML:\par
+\par
+1 Linea  \f1\emdash\emdash   2 Punto\par
+\par
+M\f0\'e1s formalmente:\par
+\par
+Linea \f3\u8594?\f1  \f0 Punto = 2\par
+\f2\u-10179?\u-8959?\f1  \f0 Multiplicidad de Punto \f3\u8594?\f1  \f0 Linea\par
+\par
+Aqu\'ed hay dos posibles interpretaciones, y es importante distinguirlas:\par
+\par
+\f5\u10004?\u-497?\f1  \f0 En el modelo de composici\'f3n estricta (el que implica \f1\ldblquote\f0 parte de\f1\rdblquote\f0 )\par
+\par
+Un Punto pertenece a una sola l\'ednea:\par
+\par
+Punto \f3\u8594?\f1  \f0 Linea = 1\par
+\par
+4\f6 . \'bf\f0 Qu\'e9\f6  \f0 significa\f6  \f0 composici\'f3n\f6  \f0 fuerte\f6  \f0 y\f6  \f0 composici\'f3n\f6  \f0 d\'e9bil\f6 ? \'bf\f0 Qu\'e9\f6  \f0 consecuencia\f6  \f0 implica\f6  \f0 en\f6  \f0 relaci\'f3n\f6  \f0 al\f6  \f0 ciclo\f6  \f0 de\f6  \f0 vida\f6  \f0 de\f6  \f0 los\f6  \f0 objetos\f6 ? \f0 Indica\f6  \f0 a\f6  \f0 cu\'e1l\f6  \f0 solemos\f6  \f0 referirnos\f6  \f0 como\f6  \f0 "asociaci\'f3n\f6  \f0 o\f6  \f0 agregaci\'f3n"\f6  \f0 y\f6  \f0 a\f6  \f0 cu\'e1l\f6  \f0 como\f6  \f0 "composici\'f3n"\f6  \f0 propiamente\f6 .\par
+\par
+Respuesta: \par
+\par
+En orientaci\'f3n a objetos (y en UML), composici\'f3n fuerte y composici\'f3n d\'e9bil describen distintos grados de relaci\'f3n entre objetos, especialmente respecto a su dependencia de vida.\par
+\par
+\f2\u-10179?\u-8903?\f7  \f6 Composici\'f3n fuerte\par
+Existe una relaci\'f3n de pertenencia muy estricta.\par
+El objeto \f7\ldblquote\f6 parte\f7\rdblquote  \f6 no puede existir sin el objeto \f7\ldblquote\f6 todo\f7\rdblquote\f6 .\par
+El \f7\ldblquote\f6 todo\f7\rdblquote  \f6 controla completamente el ciclo de vida de sus partes.\par
+Si el objeto principal se destruye, sus componentes tambi\'e9n se destruyen.\par
+\par
+\f2\u-10179?\u-9143?\f7  \f6 Ejemplo:\par
+Una Casa y sus Habitaciones. Si la casa deja de existir, las habitaciones tambi\'e9n dejan de tener sentido dentro del modelo.\par
+\par
+\f2\u-10179?\u-8903?\f7  \f6 Composici\'f3n d\'e9bil\par
+La relaci\'f3n es de uso o pertenencia menos estricta.\par
+El objeto \f7\ldblquote\f6 parte\f7\rdblquote  \f6 puede existir independientemente del \f7\ldblquote\f6 todo\f7\rdblquote\f6 .\par
+El ciclo de vida de ambos objetos no est\'e1 ligado.\par
+Si el objeto principal desaparece, los objetos asociados pueden seguir existiendo.\par
+\par
+\f2\u-10179?\u-9143?\f7  \f6 Ejemplo:\par
+Un Equipo de f\'fatbol y los Jugadores. Los jugadores siguen existiendo aunque el equipo cambie o desaparezca.\par
+\par
+5. Cuando una clase usa a otra al recibirla o devolverla como par\'e1metro en alg\'fan m\'e9todo, al hacer new dentro de un m\'e9todo, o al usarlas como variables locales, \'bfhablamos de composici\'f3n o de "dependencia"?\par
+\par
+Respuesta: \par
+\par
+Caracter\'edsticas de la dependencia\par
+Relaci\'f3n d\'e9bil y puntual\par
+Generalmente temporal (solo dentro de un m\'e9todo)\par
+No implica gesti\'f3n del ciclo de vida del objeto externo\par
+Se representa en UML con una flecha discontinua\par
+\f2\u-10179?\u-8903?\f7  \f6\'bfCu\'e1ndo es composici\'f3n entonces?\par
+\par
+Hay composici\'f3n (fuerte o d\'e9bil) cuando:\par
+\par
+la clase tiene un atributo permanente de otra clase\par
+y ese objeto forma parte del estado interno del objeto\par
+\par
+Ejemplo t\'edpico de composici\'f3n:\par
+\par
+class Coche \{\par
+    private Motor motor = new Motor();\par
+\par
+6.  En el ejemplo anterior de l\'ednea y punto, programa la relaci\'f3n entre Linea y Punto de dos formas. Una como composici\'f3n fuerte, donde el ciclo de vida de los puntos est\'e1 ligado al de Linea y otra como composici\'f3n d\'e9bil, donde no.\par
+\par
+respuesta: \par
+\par
+Composici\'f3n fuerte (los puntos dependen de la l\'ednea)\par
+\par
+Aqu\'ed la Linea crea los puntos internamente y controla su ciclo de vida.\par
+\par
+class Punto \{\par
+    private int x;\par
+    private int y;\par
+\par
+    public Punto(int x, int y) \{\par
+        this.x = x;\par
+        this.y = y;\par
+    \}\par
+\par
+    public String toString() \{\par
+        return "(" + x + "," + y + ")";\par
+    \}\par
+\}\par
+\par
+class Linea \{\par
+    private Punto p1;\par
+    private Punto p2;\par
+\par
+    // La l\'ednea crea sus propios puntos \f3\u8594? \f6 composici\'f3n fuerte\par
+    public Linea(int x1, int y1, int x2, int y2) \{\par
+        this.p1 = new Punto(x1, y1);\par
+        this.p2 = new Punto(x2, y2);\par
+    \}\par
+\par
+    public void mostrar() \{\par
+        System.out.println("L\'ednea: " + p1 + " -> " + p2);\par
+    \}\par
+\par
+2. Composici\'f3n d\'e9bil / agregaci\'f3n (los puntos son independientes)\par
+\par
+Aqu\'ed los Punto se crean fuera y se pasan a la Linea.\par
+\par
+class Punto \{\par
+    private int x;\par
+    private int y;\par
+\par
+    public Punto(int x, int y) \{\par
+        this.x = x;\par
+        this.y = y;\par
+    \}\par
+\par
+    public String toString() \{\par
+        return "(" + x + "," + y + ")";\par
+    \}\par
+\}\par
+\par
+class Linea \{\par
+    private Punto p1;\par
+    private Punto p2;\par
+\par
+    // La l\'ednea NO crea los puntos, solo los usa\par
+    public Linea(Punto p1, Punto p2) \{\par
+        this.p1 = p1;\par
+        this.p2 = p2;\par
+    \}\par
+\par
+    public void mostrar() \{\par
+        System.out.println("L\'ednea: " + p1 + " -> " + p2);\par
+    \}\par
+\}\par
+\par
+7. En Java, en la composici\'f3n fuerte, \'bfcuando el contenedor destruye los objetos? No se observa que Linea destruya los Punto expl\'edcitamente, \'bfPor qu\'e9?\par
+\par
+Respuesta: \par
+1. \'bfQu\'e9 significa \f7\ldblquote\f6 destruir\f7\rdblquote  \f6 en Java?\par
+\par
+En Java:\par
+\par
+Los objetos no se destruyen manualmente.\par
+No existe algo como delete.\par
+La memoria la libera el Garbage Collector (GC).\par
+\par
+\f2\u-10179?\u-9143?\f7  \f6 Un objeto \f7\ldblquote\f6 se destruye\f7\rdblquote  \f6 cuando:\par
+\par
+deja de ser alcanzable (no hay referencias a \'e9l),\par
+y el GC decide recolectarlo.\par
+\f2\u-10179?\u-8903?\f7  \f6 2. Entonces, \'bfqu\'e9 pasa en composici\'f3n fuerte?\par
+\par
+En composici\'f3n fuerte:\par
+\par
+class Linea \{\par
+    private Punto p1;\par
+    private Punto p2;\par
+\par
+    public Linea() \{\par
+        p1 = new Punto(0, 0);\par
+        p2 = new Punto(1, 1);\par
+    \}\par
+\}\par
+\par
+8. Pon un ejemplo de composicion d\'e9bil entre un departamento que tiene varios profesores. Implementa dos composiciones a la vez: entre el departamento y todos sus profesores y entre el departamento y su director, que es un profesor del departamento. Siempre debe haber un director en el departamento desde el inicio. Lanza excepciones si se viola la invariante. Emplea arrays primitivos de Java, estilo Profesor[], con m\'e1ximo 50, pero no rompas la encapsulaci\'f3n, no desveles que est\'e1s empleando un array, permite a\'f1adir un Profesor al final de la lista, y eliminar un profesor dada su posici\'f3n. Da acceso a los profesores con un m\'e9todo para saber cu\'e1ntos hay y otro para obtener un profesor por posici\'f3n. El director se puede cambiar por otro profesor del departamento. Sin embargo, ten en cuenta esta invariante de clase: el director debe formar siempre parte de la lista de profesores, es decir, ten cuidado al cambiar el director o al eliminar un profesor.\par
+\par
+Respuesta: \par
+\par
+Clase Profesor (entidad independiente)\par
+class Profesor \{\par
+    private String nombre;\par
+\par
+    public Profesor(String nombre) \{\par
+        if (nombre == null || nombre.isBlank()) \{\par
+            throw new IllegalArgumentException("Nombre inv\'e1lido");\par
+        \}\par
+        this.nombre = nombre;\par
+    \}\par
+\par
+    public String getNombre() \{\par
+        return nombre;\par
+    \}\par
+\par
+    @Override\par
+    public String toString() \{\par
+        return nombre;\par
+    \}\par
+\}\par
+\f5\u-10180?\u-8229?\u-497?\f7  \f6 Clase Departamento\par
+\f2\u-10179?\u-8903?\f7  \f6 Invariantes clave:\par
+M\'e1ximo 50 profesores\par
+Siempre hay un director\par
+El director SIEMPRE est\'e1 en la lista de profesores\par
+No se puede eliminar al director sin reemplazarlo antes\par
+class Departamento \{\par
+\par
+    private static final int MAX = 50;\par
+\par
+    private Profesor[] profesores = new Profesor[MAX];\par
+    private int numProfesores = 0;\par
+\par
+    private Profesor director;\par
+\par
+    // \f2\u-10179?\u-8908?\f7  \f6 Constructor: exige director inicial\par
+    public Departamento(Profesor director) \{\par
+        if (director == null) \{\par
+            throw new IllegalArgumentException("El director no puede ser null");\par
+        \}\par
+\par
+        this.director = director;\par
+        a\'f1adirProfesor(director); // invariante garantizada desde el inicio\par
+    \}\par
+\f4\u10133?\f7  \f6 A\'f1adir profesor\par
+    public void a\'f1adirProfesor(Profesor p) \{\par
+        if (p == null) \{\par
+            throw new IllegalArgumentException("Profesor null");\par
+        \}\par
+\par
+        if (numProfesores >= MAX) \{\par
+            throw new IllegalStateException("Departamento lleno");\par
+        \}\par
+\par
+        // Evitar duplicados simples\par
+        if (contiene(p)) return;\par
+\par
+        profesores[numProfesores++] = p;\par
+    \}\par
+\f4\u10060?\f7  \f6 Eliminar profesor por posici\'f3n\par
+\par
+\f5\u9888?\u-497?\f7  \f6 No se puede eliminar al director sin m\'e1s.\par
+\par
+    public void eliminarProfesor(int index) \{\par
+        validarIndice(index);\par
+\par
+        Profesor aEliminar = profesores[index];\par
+\par
+        // Invariante cr\'edtica\par
+        if (aEliminar == director) \{\par
+            throw new IllegalStateException(\par
+                "No se puede eliminar al director sin cambiarlo antes"\par
+            );\par
+        \}\par
+\par
+        desplazarIzquierda(index);\par
+    \}\par
+\f2\u-10179?\u-8956?\f7  \f6 Cambiar director\par
+\par
+\f4\u10004?\f7  \f6 Debe ser un profesor del departamento\par
+\par
+    public void cambiarDirector(Profesor nuevoDirector) \{\par
+        if (nuevoDirector == null) \{\par
+            throw new IllegalArgumentException("Director null");\par
+        \}\par
+\par
+        if (!contiene(nuevoDirector)) \{\par
+            throw new IllegalStateException(\par
+                "El director debe pertenecer al departamento"\par
+            );\par
+        \}\par
+\par
+        this.director = nuevoDirector;\par
+    \}\par
+\f2\u-10179?\u-9014?\f7  \f6 Acceso controlado a la lista\par
+    public int numeroProfesores() \{\par
+        return numProfesores;\par
+    \}\par
+\par
+    public Profesor getProfesor(int index) \{\par
+        validarIndice(index);\par
+        return profesores[index];\par
+    \}\par
+\par
+    public Profesor getDirector() \{\par
+        return director;\par
+    \}\par
+\f2\u-10179?\u-8921?\f7  \f6 M\'e9todos auxiliares (privados)\par
+    private boolean contiene(Profesor p) \{\par
+        for (int i = 0; i < numProfesores; i++) \{\par
+            if (profesores[i].equals(p)) return true;\par
+        \}\par
+        return false;\par
+    \}\par
+\par
+    private void validarIndice(int index) \{\par
+        if (index < 0 || index >= numProfesores) \{\par
+            throw new IndexOutOfBoundsException("\'cdndice inv\'e1lido");\par
+        \}\par
+    \}\par
+\par
+    private void desplazarIzquierda(int index) \{\par
+        for (int i = index; i < numProfesores - 1; i++) \{\par
+            profesores[i] = profesores[i + 1];\par
+        \}\par
+        profesores[--numProfesores] = null;\par
+\par
+9. En Java, existen tambi\'e9n List, cambia y muestra c\'f3mo ser\'eda el c\'f3digo anterior empleando List en vez de arrays primitivos. \'bfQu\'e9 parte del c\'f3digo original te has ahorrado? Adem\'e1s, f\'edjate en el m\'e9todo getProfesor(int pos): si en su lugar existiera un m\'e9todo que devolviera todos los profesores a la vez, \'bfqu\'e9 problema tendr\'eda devolver directamente la lista interna? \'bfC\'f3mo lo resolver\'edas?\par
+\par
+Respuesta: \par
+\par
+Versi\'f3n con List<Profesor>\par
+\par
+Usamos List (normalmente ArrayList) en lugar de arrays primitivos.\par
+\par
+import java.util.ArrayList;\par
+import java.util.List;\par
+\par
+class Profesor \{\par
+    private String nombre;\par
+\par
+    public Profesor(String nombre) \{\par
+        if (nombre == null || nombre.isBlank()) \{\par
+            throw new IllegalArgumentException("Nombre inv\'e1lido");\par
+        \}\par
+        this.nombre = nombre;\par
+    \}\par
+\par
+    public String getNombre() \{\par
+        return nombre;\par
+    \}\par
+\par
+    @Override\par
+    public String toString() \{\par
+        return nombre;\par
+    \}\par
+\}\par
+\f5\u-10180?\u-8229?\u-497?\f7  \f6 Departamento\par
+import java.util.ArrayList;\par
+import java.util.List;\par
+\par
+class Departamento \{\par
+\par
+    private List<Profesor> profesores = new ArrayList<>();\par
+    private Profesor director;\par
+\par
+    // \f2\u-10179?\u-8908?\f7  \f6 Siempre debe haber director\par
+    public Departamento(Profesor director) \{\par
+        if (director == null) \{\par
+            throw new IllegalArgumentException("El director no puede ser null");\par
+        \}\par
+\par
+        this.director = director;\par
+        profesores.add(director); // invariante inicial\par
+    \}\par
+\par
+    // \f4\u10133?\f7  \f6 a\'f1adir profesor\par
+    public void a\'f1adirProfesor(Profesor p) \{\par
+        if (p == null) \{\par
+            throw new IllegalArgumentException("Profesor null");\par
+        \}\par
+\par
+        if (!profesores.contains(p)) \{\par
+            profesores.add(p);\par
+        \}\par
+    \}\par
+\par
+    // \f4\u10060?\f7  \f6 eliminar por posici\'f3n\par
+    public void eliminarProfesor(int pos) \{\par
+        validarPos(pos);\par
+\par
+        Profesor p = profesores.get(pos);\par
+\par
+        if (p == director) \{\par
+            throw new IllegalStateException(\par
+                "No se puede eliminar al director sin cambiarlo antes"\par
+            );\par
+        \}\par
+\par
+        profesores.remove(pos);\par
+    \}\par
+\par
+    // \f2\u-10179?\u-8956?\f7  \f6 cambiar director\par
+    public void cambiarDirector(Profesor nuevoDirector) \{\par
+        if (nuevoDirector == null) \{\par
+            throw new IllegalArgumentException("Director null");\par
+        \}\par
+\par
+        if (!profesores.contains(nuevoDirector)) \{\par
+            throw new IllegalStateException(\par
+                "El director debe pertenecer al departamento"\par
+            );\par
+        \}\par
+\par
+        this.director = nuevoDirector;\par
+    \}\par
+\par
+    // \f2\u-10179?\u-9014?\f7  \f6 acceso\par
+    public int numeroProfesores() \{\par
+        return profesores.size();\par
+    \}\par
+\par
+    public Profesor getProfesor(int pos) \{\par
+        validarPos(pos);\par
+        return profesores.get(pos);\par
+    \}\par
+\par
+    public Profesor getDirector() \{\par
+        return director;\par
+    \}\par
+\par
+    private void validarPos(int pos) \{\par
+        if (pos < 0 || pos >= profesores.size()) \{\par
+            throw new IndexOutOfBoundsException("Posici\'f3n inv\'e1lida");\par
+        \}\par
+    \}\par
+\}\par
+\par
+10. Al igual que ocurre con las excepciones en Java, que pueden encerrar causas (que son excepciones), de forma recursiva, suponen un tipo especial de composiciones, denominadas composiciones recursivas. Pon un ejemplo en Java de una Persona, que sea inmutable, y que tiene una madre, que es otra Persona. Haz un main con un ejemplo de uso con una familia de personas, desde el nieto hasta la abuela. Enumera alg\'fan otro ejemplo cl\'e1sico de composiciones recursivas.\par
+\par
+respuesta: \par
+\par
+final class Persona \{\par
+\par
+    private final String nombre;\par
+    private final Persona madre;\par
+\par
+    public Persona(String nombre, Persona madre) \{\par
+        if (nombre == null || nombre.isBlank()) \{\par
+            throw new IllegalArgumentException("Nombre inv\'e1lido");\par
+        \}\par
+\par
+        this.nombre = nombre;\par
+        this.madre = madre;\par
+    \}\par
+\par
+    public String getNombre() \{\par
+        return nombre;\par
+    \}\par
+\par
+    public Persona getMadre() \{\par
+        return madre;\par
+    \}\par
+\par
+    @Override\par
+    public String toString() \{\par
+        return nombre;\par
+    \}\par
+\}\par
+\par
+Tema 4.2. Herencia\par
+\par
+\par
+1. En orientaci\'f3n a objetos, \'bfqu\'e9 es la herencia y su relaci\'f3n con "A es-un B"?. Explica las dos implicaciones principales: (1) compatibilidad de tipos y (2) herencia de estado y comportamiento. Pon un ejemplo en Java muy sencillo, donde un Soldado tiene un nombre (privado) y un m\'e9todo saludar() que muestra su nombre. Hay dos subtipos: un Artillero, que es capaz de disparar cohetes y un Zapador que pone minas, ambos heredan el atributo nombre y la capacidad de saludar. Adem\'e1s, y de forma espec\'edfica, el artillero tiene un n\'famero de cohetes y el zapador un n\'famero de minas, accesibles mediante "getters" espec\'edficos. Respecto a la compatibilidad de tipos, aprovech\'e9mosla: crea un array de Soldado, mete varios de distinto tipo (son todos compatibles con Soldado). Rec\'f3rrela y que todos te saluden.\par
+\par
+Respuesta: \par
+\par
+Implicaciones principales de la herencia\par
+1) Compatibilidad de tipos (polimorfismo)\par
+\par
+Si Artillero y Zapador heredan de Soldado, entonces:\par
+\par
+Un Artillero es compatible con el tipo Soldado\par
+Un Zapador es compatible con el tipo Soldado\par
+\par
+\f2\u-10179?\u-9143?\f7  \f2 Esto\f6  \f2 permite\f6  \f2 tratar\f6  \f2 objetos\f6  \f2 distintos\f6  \f2 de\f6  \f2 forma\f6  \f2 uniforme\f6 .\f2\par
+\par
+2\f6 ) \f2 Herencia\f6  \f2 de\f6  \f2 estado\f6  \f2 y\f6  \f2 comportamiento\par
+\par
+Las\f6  \f2 subclases\f6 :\f2\par
+\par
+heredan\f6  \f2 atributos\f6  (\f2 estado\f6 )\f2\par
+heredan\f6  \f2 m\f8\'e9todos\f6  (\f8 comportamiento\f6 )\f8\par
+\par
+Pero\f6  \f8 adem\'e1s\f6  \f8 pueden\f6 :\f8\par
+\par
+a\'f1adir\f6  \f8 nuevos\f6  \f8 atributos\f6 /\f8 m\'e9todos\par
+especializar\f6  \f8 comportamiento\par
+\f2\u-10179?\u-8905?\f7  \f2 Ejemplo\f6  \f2 en\f6  \f2 Java\par
+\f6 // \f2 Clase\f6  \f2 base\par
+class\f6  \f2 Soldado\f6  \{\f2\par
+\f6     \f2 private\f6  \f2 String\f6  \f2 nombre\f6 ;\f2\par
+\par
+\f6     \f2 public\f6  \f2 Soldado\f6 (\f2 String\f6  \f2 nombre\f6 ) \{\f2\par
+\f6         \f2 this\f6 .\f2 nombre\f6  = \f2 nombre\f6 ;\f2\par
+\f6     \}\f2\par
+\par
+\f6     \f2 public\f6  \f2 void\f6  \f2 saludar\f6 () \{\f2\par
+\f6         \f2 System\f6 .\f2 out\f6 .\f2 println\f6 (\f2 "Hola\f6 , \f2 soy\f6  \f2 "\f6  + \f2 nombre\f6 );\f2\par
+\f6     \}\f2\par
+\par
+\f6     \f2 public\f6  \f2 String\f6  \f2 getNombre\f6 () \{\f2\par
+\f6         \f2 return\f6  \f2 nombre\f6 ;\f2\par
+\f6     \}\f2\par
+\f6\}\f2\par
+Subclase\f6 : \f2 Artillero\par
+class\f6  \f2 Artillero\f6  \f2 extends\f6  \f2 Soldado\f6  \{\f2\par
+\f6     \f2 private\f6  \f2 int\f6  \f2 cohetes\f6 ;\f2\par
+\par
+\f6     \f2 public\f6  \f2 Artillero\f6 (\f2 String\f6  \f2 nombre\f6 , \f2 int\f6  \f2 cohetes\f6 ) \{\f2\par
+\f6         \f2 super\f6 (\f2 nombre\f6 );\f2\par
+\f6         \f2 this\f6 .\f2 cohetes\f6  = \f2 cohetes\f6 ;\f2\par
+\f6     \}\f2\par
+\par
+\f6     \f2 public\f6  \f2 int\f6  \f2 getCohetes\f6 () \{\f2\par
+\f6         \f2 return\f6  \f2 cohetes\f6 ;\f2\par
+\f6     \}\f2\par
+\par
+\f6     \f2 public\f6  \f2 void\f6  \f2 disparar\f6 () \{\f2\par
+\f6         \f2 System\f6 .\f2 out\f6 .\f2 println\f6 (\f2 getNombre\f6 () + \f2 "\f6  \f2 dispara\f6  \f2 un\f6  \f2 cohete\f6 !\f2 "\f6 );\f2\par
+\f6         \f2 cohetes\f6 --;\f2\par
+\f6     \}\f2\par
+\f6\}\f2\par
+Subclase\f6 : \f2 Zapador\par
+class\f6  \f2 Zapador\f6  \f2 extends\f6  \f2 Soldado\f6  \{\f2\par
+\f6     \f2 private\f6  \f2 int\f6  \f2 minas\f6 ;\f2\par
+\par
+\f6     \f2 public\f6  \f2 Zapador\f6 (\f2 String\f6  \f2 nombre\f6 , \f2 int\f6  \f2 minas\f6 ) \{\f2\par
+\f6         \f2 super\f6 (\f2 nombre\f6 );\f2\par
+\f6         \f2 this\f6 .\f2 minas\f6  = \f2 minas\f6 ;\f2\par
+\f6     \}\f2\par
+\par
+\f6     \f2 public\f6  \f2 int\f6  \f2 getMinas\f6 () \{\f2\par
+\f6         \f2 return\f6  \f2 minas\f6 ;\f2\par
+\f6     \}\f2\par
+\par
+\f6     \f2 public\f6  \f2 void\f6  \f2 ponerMina\f6 () \{\f2\par
+\f6         \f2 System\f6 .\f2 out\f6 .\f2 println\f6 (\f2 getNombre\f6 () + \f2 "\f6  \f2 coloca\f6  \f2 una\f6  \f2 mina\f6 !\f2 "\f6 );\f2\par
+\f6         \f2 minas\f6 --;\f2\par
+\f6     \}\f2\par
+\f6\}\f2\par
+\u-10179?\u-8905?\f7  \f2 Uso\f6  \f2 de\f6  \f2 la\f6  \f2 compatibilidad\f6  \f2 de\f6  \f2 tipos\f6  (\f2 polimorfismo\f6 )\f2\par
+public\f6  \f2 class\f6  \f2 Main\f6  \{\f2\par
+\f6     \f2 public\f6  \f2 static\f6  \f2 void\f6  \f2 main\f6 (\f2 String\f6 [] \f2 args\f6 ) \{\f2\par
+\par
+\f6         \f2 Soldado\f6 [] \f2 ejercito\f6  = \f2 new\f6  \f2 Soldado\f6 [\f2 4\f6 ];\f2\par
+\par
+\f6         \f2 ejercito\f6 [\f2 0\f6 ] = \f2 new\f6  \f2 Soldado\f6 (\f2 "Juan"\f6 );\f2\par
+\f6         \f2 ejercito\f6 [\f2 1\f6 ] = \f2 new\f6  \f2 Artillero\f6 (\f2 "Carlos"\f6 , \f2 5\f6 );\f2\par
+\f6         \f2 ejercito\f6 [\f2 2\f6 ] = \f2 new\f6  \f2 Zapador\f6 (\f2 "Luis"\f6 , \f2 3\f6 );\f2\par
+\f6         \f2 ejercito\f6 [\f2 3\f6 ] = \f2 new\f6  \f2 Artillero\f6 (\f2 "Miguel"\f6 , \f2 2\f6 );\f2\par
+\par
+\f6         \f2 for\f6  (\f2 Soldado\f6  \f2 s\f6  : \f2 ejercito\f6 ) \{\f2\par
+\f6             \f2 s\f6 .\f2 saludar\f6 (); // \f2 todos\f6  \f2 pueden\f6  \f2 hacerlo\f6  \f2 gracias\f6  \f2 a\f6  \f2 la\f6  \f2 herencia\par
+\f6         \}\f2\par
+\f6     \}\f2\par
+\f6\}\par
+\par
+2. Al crear los soldados concretos, \'bfcu\'e1ntos constructores se ejecutan y en qu\'e9 orden? \'bfQu\'e9 significa super dentro de un constructor? Si la clase base no tiene visible el constructor sin par\'e1metros, \'bfdebo llamar a super siempre?\par
+\par
+Cu\'e1ntos constructores se ejecutan y en qu\'e9 orden?\par
+\par
+Al crear, por ejemplo:\par
+\par
+new Artillero("Carlos", 5);\par
+\par
+Se ejecutan dos constructores:\par
+\par
+El constructor de la clase base (Soldado)\par
+El constructor de la clase derivada (Artillero)\par
+\f2\u-10179?\u-8899?\f7  \f2 Orden\f6  \f2 real\f6  \f2 de\f6  \f2 ejecuci\f8\'f3n\f6 :\f8\par
+Primero\f6  \f8 se\f6  \f8 ejecuta\f6  \f8 el\f6  \f8 constructor\f6  \f8 de\f6  \f8 Soldado\par
+Despu\'e9s\f6  \f8 el\f6  \f8 constructor\f6  \f8 de\f6  \f8 Artillero\par
+\par
+\f2\u-10179?\u-9143?\f7  \f2 Siempre\f6  \f2 se\f6  \f2 construye\f6  \f2 primero\f6  \f2 la\f6  \f2\ldblquote parte\f6  \f2 Soldado\rdblquote\f7  \f2 del\f6  \f2 objeto\f6 .\f2\par
+\par
+\u-10179?\u-8905?\f7  \f6\'bf\f8 Qu\'e9\f6  \f8 significa\f6  \f8 super\f6  \f8 en\f6  \f8 un\f6  \f8 constructor\f6 ?\f8\par
+\par
+super\f6 (...) \f8 es\f6  \f8 una\f6  \f8 llamada\f6  \f8 expl\'edcita\f6  \f8 al\f6  \f8 constructor\f6  \f8 de\f6  \f8 la\f6  \f8 clase\f6  \f8 padre\f6 .\f8\par
+\par
+Ejemplo\f6 :\f8\par
+\par
+public\f6  \f8 Artillero\f6 (\f8 String\f6  \f8 nombre\f6 , \f8 int\f6  \f8 cohetes\f6 ) \{\f8\par
+\f6     \f8 super\f6 (\f8 nombre\f6 );  // \f8 llama\f6  \f8 al\f6  \f8 constructor\f6  \f8 de\f6  \f8 Soldado\par
+\f6     \f8 this\f6 .\f8 cohetes\f6  = \f8 cohetes\f6 ;\f8\par
+\f6\}\f8\par
+\f2\u-10179?\u-8943?\f7  \f2 Significa\f6 :\f2\par
+\ldblquote Construye\f6  \f2 primero\f6  \f2 la\f6  \f2 parte\f6  \f2 heredada\f6  \f2 del\f6  \f2 objeto\rdblquote\par
+Inicializa\f6  \f2 el\f6  \f2 estado\f6  \f2 de\f6  \f2 la\f6  \f2 superclase\f6  (\f2 Soldado\f6 )\f2\par
+\u-10179?\u-8905?\f7  \f6\'bf\f8 Qu\'e9\f6  \f8 pasa\f6  \f8 si\f6  \f8 no\f6  \f8 escribo\f6  \f8 super\f6 ()?\f8\par
+\par
+Java\f6  \f8 lo\f6  \f8 a\'f1ade\f6  \f8 autom\'e1ticamente\f6  \f8 solo\f6  \f8 si\f6  \f8 puede\f6 :\f8\par
+\par
+public\f6  \f8 Artillero\f6 (\f8 String\f6  \f8 nombre\f6 , \f8 int\f6  \f8 cohetes\f6 ) \{\f8\par
+\f6     \f8 this\f6 .\f8 cohetes\f6  = \f8 cohetes\f6 ;\f8\par
+\f6\}\f8\par
+\par
+Java\f6  \f8 intenta\f6  \f8 insertar\f6 :\f8\par
+\par
+super\f6 ();  // \f8 impl\'edcito\par
+\f2\u-10179?\u-8905?\f7  \f2 Caso\f6  \f2 importante\f6 : \f2 si\f6  \f2 la\f6  \f2 clase\f6  \f2 base\f6  \f2 NO\f6  \f2 tiene\f6  \f2 constructor\f6  \f2 sin\f6  \f2 par\f8\'e1metros\par
+\par
+Si\f6  \f8 Soldado\f6  \f8 solo\f6  \f8 tiene\f6  \f8 esto\f6 :\f8\par
+\par
+public\f6  \f8 Soldado\f6 (\f8 String\f6  \f8 nombre\f6 ) \{\f8\par
+\f6     \f8 this\f6 .\f8 nombre\f6  = \f8 nombre\f6 ;\f8\par
+\f6\}\f8\par
+\par
+\f4\u10060?\f7  \f4 NO\f6  \f4 existe\f6  \f4 Soldado\f6 ()\f4\par
+\par
+Entonces\f6  \f4 esto\f6  \f4 falla\f6 :\f4\par
+\par
+public\f6  \f4 Artillero\f6 (\f4 String\f6  \f4 nombre\f6 , \f4 int\f6  \f4 cohetes\f6 ) \{\f4\par
+\f6     \f4 this\f6 .\f4 cohetes\f6  = \f4 cohetes\f6 ;\f4\par
+\f6\}\f4\par
+\par
+Porque\f6  \f4 Java\f6  \f4 intentar\f8\'e1\f6  \f8 hacer\f6  \f8 impl\'edcitamente\f6 :\f8\par
+\par
+super\f6 (); // \f4\u10060?\f7  \f4 ERROR\f6 : \f4 no\f6  \f4 existe\par
+\par
+\f8\lang3082 3.  \b Respecto a los objetos de subclases en memoria, los atributos privados de la superclase, \'bfforman parte de una instancia de la subclase en memoria? En caso afirmativo \'bfimplica que se puedan usar desde el c\'f3digo de la subclase? Expl\'edcalo con el ejemplo de Soldado y alguna de sus subclases\b0 .\par
+\par
+Resapuesta: \par
+\par
+\'bfEst\'e1n los atributos privados en la subclase en memoria?\par
+\par
+Cuando haces:\par
+\par
+new Artillero("Carlos", 5);\par
+\par
+El objeto en memoria no es \f9\ldblquote\f8 dos objetos\f9\rdblquote\f8 , sino uno solo que contiene:\par
+\par
+La \f9\ldblquote\f8 parte Soldado\f9\rdblquote\f8\par
+La \f9\ldblquote\f8 parte Artillero\f9\rdblquote\f8\par
+\par
+Es decir, algo as\'ed (conceptualmente):\par
+\par
+Objeto Artillero\par
+\f9  \f4\u9500?\u9472?\u9472? Soldado (subobjeto interno)\par
+ \u9474?     \u9492?\u9472?\u9472? nombre (private)\par
+ \u9492?\u9472?\u9472? Artillero\par
+       \u9492?\u9472?\u9472? cohetes\par
+\par
+\f2\u-10179?\u-9143? Por tanto:\par
+\par
+\f5\u10004?\u-497? nombre s\f10\'ed existe dentro del objeto\par
+\f5\u10004?\u-497? pero est\f10\'e1 dentro de la \f11\ldblquote\f10 subparte Soldado\f11\rdblquote\f10\par
+\f5\u-10179?\u-8905? 2) Si es private, \f10\'bfpuede la subclase usarlo directamente?\par
+\par
+\f4\u10060? No.\par
+\par
+Aunque el atributo est\f8\'e9 f\'edsicamente en el objeto, el modificador:\par
+\par
+private String nombre;\par
+\par
+significa:\par
+\par
+\f9\ldblquote\f8 Solo accesible dentro de la clase Soldado\f9\rdblquote\f8\par
+\par
+\f2\u-10179?\u-8905? Ejemplo con Soldado y Artillero\par
+class Soldado \{\par
+    private String nombre;\par
+\par
+    public Soldado(String nombre) \{\par
+        this.nombre = nombre;\par
+    \}\par
+\par
+    public void saludar() \{\par
+        System.out.println("Hola, soy " + nombre);\par
+    \}\par
+\par
+    protected String getNombre() \{\par
+        return nombre;\par
+    \}\par
+\}\par
+class Artillero extends Soldado \{\par
+    private int cohetes;\par
+\par
+    public Artillero(String nombre, int cohetes) \{\par
+        super(nombre);\par
+        this.cohetes = cohetes;\par
+    \}\par
+\par
+    public void disparar() \{\par
+        // \f4\u10060? ERROR: no se puede acceder directamente\par
+        // System.out.println(nombre);\par
+\par
+        // \f5\u10004?\u-497? forma correcta: usar m\f10\'e9todo de la superclase\par
+        System.out.println(getNombre() + " dispara un cohete");\par
+        cohetes--;\par
+    \}\par
+\}\par
+\par
+4. \'bfQu\'e9 implica en t\'e9rminos de extensibilidad de c\'f3digo el hecho de que sean compatibles a nivel de tipos? Ilustra esto a\'f1adiendo un nuevo tipo de Soldado y demostrando que el c\'f3digo para pedir el saludo a todos los soldados no se modifica.\par
+\par
+Respuesta:\par
+\par
+C\'f3digo base (sin cambios)\par
+\par
+Este c\'f3digo es el importante: no se toca nunca m\'e1s.\par
+\par
+class Soldado \{\par
+    private String nombre;\par
+\par
+    public Soldado(String nombre) \{\par
+        this.nombre = nombre;\par
+    \}\par
+\par
+    public void saludar() \{\par
+        System.out.println("Hola, soy " + nombre);\par
+    \}\par
+\par
+    public String getNombre() \{\par
+        return nombre;\par
+    \}\par
+\}\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+\par
+        Soldado[] ejercito = new Soldado[3];\par
+\par
+        ejercito[0] = new Artillero("Carlos", 5);\par
+        ejercito[1] = new Zapador("Luis", 3);\par
+        ejercito[2] = new Soldado("Juan");\par
+\par
+        for (Soldado s : ejercito) \{\par
+            s.saludar();\par
+        \}\par
+    \}\par
+\}\par
+\f5\u-10179?\u-8905? Ahora a\f10\'f1adimos un nuevo tipo SIN tocar el c\'f3digo anterior\par
+\par
+Supongamos que a\'f1adimos un nuevo soldado:\par
+\par
+\f4\u-10180?\u-8811? M\f8\'e9dico de combate\par
+class Medico extends Soldado \{\par
+    private int curaciones;\par
+\par
+    public Medico(String nombre, int curaciones) \{\par
+        super(nombre);\par
+        this.curaciones = curaciones;\par
+    \}\par
+\par
+    public int getCuraciones() \{\par
+        return curaciones;\par
+    \}\par
+\par
+    public void curar() \{\par
+        System.out.println(getNombre() + " cura a un compa\'f1ero");\par
+        curaciones--;\par
+    \}\par
+\}\par
+\f2\u-10179?\u-8905? Uso del nuevo tipo (sin modificar Main)\par
+\par
+Ahora SOLO a\f8\'f1adimos un objeto nuevo:\par
+\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+\par
+        Soldado[] ejercito = new Soldado[4];\par
+\par
+        ejercito[0] = new Artillero("Carlos", 5);\par
+        ejercito[1] = new Zapador("Luis", 3);\par
+        ejercito[2] = new Soldado("Juan");\par
+        ejercito[3] = new Medico("Ana", 10); // NUEVO TIPO\par
+\par
+        for (Soldado s : ejercito) \{\par
+            s.saludar();\par
+        \}\par
+    \}\par
+\}\par
+\par
+5. En Java, cuando trabajo con referencias y herencia. \'bfPuedo tener una referencia del supertipo que apunte a objetos reales de un subtipo? \'bfPuedo invocar con la referencia del supertipo a m\'e9todos p\'fablicos del subtipo? \'bfEn qu\'e9 consiste el "upcasting" y el "downcasting"? \'bfQu\'e9 es el instanceof? Pon un ejemplo de recorrido de un array de Soldado, comprobando que, si el objeto real es un Artillero, solicite el n\'famero de cohetes que tiene y los imprima.\par
+\par
+Respuesta: \par
+\par
+1. \'bfPuede una referencia del supertipo apuntar a un subtipo?\par
+\par
+S\'ed. Esto es completamente v\'e1lido:\par
+\par
+Soldado s = new Artillero();\par
+Soldado \f3\u8594?\f9  \f8 superclase (tipo de la referencia)\par
+Artillero \f3\u8594?\f9  \f8 subtipo (objeto real)\par
+\par
+Esto se llama upcasting impl\'edcito.\par
+\par
+2. \'bfPuedo invocar m\'e9todos del subtipo con una referencia del supertipo?\par
+\par
+No directamente.\par
+\par
+Con la referencia Soldado s, solo puedes llamar a m\'e9todos definidos en Soldado, aunque el objeto real sea un Artillero.\par
+\par
+s.disparar(); // OK si est\'e1 en Soldado\par
+s.getCohetes(); // ERROR si solo existe en Artillero\par
+\par
+\f2\u-10179?\u-9143? Excepci\f8\'f3n importante: si el m\'e9todo est\'e1 sobrescrito (override), se ejecuta el del objeto real (polimorfismo din\'e1mico).\par
+\par
+3. \'bfQu\'e9 es el upcasting?\par
+\par
+Es convertir impl\'edcitamente un subtipo en su supertipo.\par
+\par
+Artillero a = new Artillero();\par
+Soldado s = a; // upcasting autom\'e1tico\par
+\par
+\f4\u10004? Siempre seguro\par
+\u10004? Impl\f8\'edcito\par
+\f4\u10004? Pierdes acceso a m\f8\'e9todos espec\'edficos del subtipo\par
+\par
+4. \'bfQu\'e9 es el downcasting?\par
+\par
+Es convertir expl\'edcitamente una referencia del supertipo al subtipo.\par
+\par
+Soldado s = new Artillero(); // upcasting\par
+Artillero a = (Artillero) s; // downcasting\par
+\par
+\f5\u9888?\u-497? Peligroso si el objeto real no es del tipo correcto:\par
+\par
+Soldado s = new Soldado();\par
+Artillero a = (Artillero) s; // ERROR en runtime (ClassCastException)\par
+5. \f10\'bfQu\'e9 es instanceof?\par
+\par
+Es un operador que comprueba si un objeto es de un tipo espec\'edfico (o subtipo).\par
+\par
+if (s instanceof Artillero) \{\par
+    Artillero a = (Artillero) s;\par
+\}\par
+\par
+\f4\u10004? Evita ClassCastException\par
+\u10004? Muy usado antes del downcasting\par
+\par
+6. Ejemplo completo: array de Soldado\par
+Clases\par
+class Soldado \{\par
+    String nombre;\par
+\par
+    public Soldado(String nombre) \{\par
+        this.nombre = nombre;\par
+    \}\par
+\par
+    public void atacar() \{\par
+        System.out.println(nombre + " ataca");\par
+    \}\par
+\}\par
+class Artillero extends Soldado \{\par
+    int cohetes;\par
+\par
+    public Artillero(String nombre, int cohetes) \{\par
+        super(nombre);\par
+        this.cohetes = cohetes;\par
+    \}\par
+\par
+    public int getCohetes() \{\par
+        return cohetes;\par
+    \}\par
+\par
+    @Override\par
+    public void atacar() \{\par
+        System.out.println(nombre + " dispara artiller\f8\'eda");\par
+    \}\par
+\}\par
+7. Recorrido del array con instanceof\par
+public class Main \{\par
+    public static void main(String[] args) \{\par
+\par
+        Soldado[] ejercito = new Soldado[3];\par
+\par
+        ejercito[0] = new Soldado("Pepe");\par
+        ejercito[1] = new Artillero("Luis", 5);\par
+        ejercito[2] = new Artillero("Carlos", 12);\par
+\par
+        for (Soldado s : ejercito) \{\par
+\par
+            s.atacar(); // polimorfismo\par
+\par
+            if (s instanceof Artillero) \{\par
+                Artillero a = (Artillero) s;\par
+\par
+                System.out.println(\par
+                    "Artillero " + a.nombre +\par
+                    " tiene " + a.getCohetes() + " cohetes"\par
+                );\par
+            \}\par
+        \}\par
+    \}\par
+\}\par
+\par
+6. Respecto\f6  \f8 a\f6  \f8 la\f6  \f8 ocultaci\'f3n\f6  \f8 de\f6  \f8 informaci\'f3n\f6  \f8 y\f6  \f8 herencia\f6 , \'bf\f8 qu\'e9\f6  \f8 significa\f6  \f8 acceso\f6  \f8 "protegido"\f6  \f8 de\f6  \f8 m\'e9todos\f6  \f8 y\f6 /\f8 o\f6  \f8 atributos\f6 ? \'bf\f8 C\'f3mo\f6  \f8 se\f6  \f8 implementa\f6  \f8 en\f6  \f8 Java\f6 ? \f8 Pon\f6  \f8 un\f6  \f8 ejemplo\f6  \f8 de\f6  \f8 uso\f6  \f8 de\f6  \f8 en\f6  \f8 la\f6  \f8 clase\f6  \f8 Soldado\f6  \f8 para\f6  \f8 que\f6  \f8 su\f6  \f8 nombre\f6  \f8 sea\f6  \f8 protegido\f6  \f8 y\f6  \f8 pueda\f6  \f8 usarse\f6  \f8 en\f6  \f8 el\f6  \f8 m\'e9todo\f6  \f8 de\f6  \f8 poner\f6  \f8 bombas\f6  \f8 del\f6  \f8 Zapador\f6 .\par
+\par
+Respuesta: \par
+\par
+Qu\'e9 significa protected?\par
+\par
+Un atributo o m\'e9todo protected es accesible:\par
+\par
+Dentro de la misma clase\par
+Dentro del mismo paquete\par
+Y adem\'e1s, desde subclases aunque est\'e9n en otro paquete\par
+\par
+ejemplo: \par
+class Soldado \{\par
+\par
+    protected String nombre;  // accesible en subclases\par
+\par
+    public Soldado(String nombre) \{\par
+        this.nombre = nombre;\par
+    \}\par
+\par
+    public void atacar() \{\par
+        System.out.println(nombre + " ataca");\par
+    \}\par
+\}\par
+\par
+7. En los lenguajes orientados a objetos \'bfhay una clase base para todos los objetos? \'bfOcurre en todos los lenguajes? \'bfQu\'e9 ocurre en Java?\par
+\par
+Respuesta:\par
+\par
+1. \'bfExiste una clase base para todos los objetos?\par
+\par
+En algunos lenguajes s\'ed existe una clase ra\'edz, llamada a veces \f7\ldblquote\f6 Object\f7\rdblquote  \f6 o \f7\ldblquote\f6 Object class\f7\rdblquote\f6 , de la que heredan todos los dem\'e1s objetos.\par
+\par
+Esto permite cosas como:\par
+\par
+Tratar cualquier objeto de forma gen\'e9rica\par
+Definir m\'e9todos comunes (como toString, equals, etc.)\par
+Hacer polimorfismo universal\par
+\par
+2. Ejemplos en distintos lenguajes\par
+\f4\u10004?\f7  \f4 Java\f6  \f3\u8594? S\f6\'cd existe clase base universal\par
+\par
+En Java, todas las clases heredan de:\par
+\par
+3. En Java:\par
+\par
+\f4\u10004?\f7  \f4 Todo\f6  \f4 objeto\f6  \f4 hereda\f6  \f4 de\f6  \f4 Object\par
+\par
+Ejemplo\f6 :\f4\par
+\par
+class\f6  \f4 Soldado\f6  \{ \}\f4\par
+\par
+En\f6  \f4 realidad\f6  \f4 es\f6  \f4 equivalente\f6  \f4 a\f6 :\f4\par
+\par
+class\f6  \f4 Soldado\f6  \f4 extends\f6  \f4 Object\f6  \{ \}\par
+\par
+8. \'bfQu\'e9 es la "herencia m\'faltiple"? \'bfExiste en Java herencia m\'faltiple?\par
+\par
+Respuesta: \par
+\par
+\'bfQu\'e9 es la herencia m\'faltiple?\par
+\par
+La herencia m\'faltiple ocurre cuando una clase puede heredar de m\'e1s de una clase padre al mismo tiempo.\par
+\par
+Ejemplo conceptual:\par
+\par
+ClaseC hereda de ClaseA y ClaseB\par
+class C extends A, B  // (esto ser\'eda herencia m\'faltiple)\par
+\par
+La idea es que la clase hija combine caracter\'edsticas de varias clases base.\par
+\par
+\'bfPor qu\'e9 puede ser problem\'e1tica?\par
+\par
+El principal problema es el conflicto de ambig\'fcedad, conocido como el problema del diamante:\par
+\par
+      A\par
+     / \\\par
+    B   C\par
+     \\ /\par
+      D\par
+\par
+Si A define un m\'e9todo hablar(), y B y C lo sobrescriben de forma distinta, \'bfqu\'e9 versi\'f3n hereda D?\par
+\par
+\f2\u-10179?\u-9143?\f7  \f2 El\f6  \f2 lenguaje\f6  \f2 no\f6  \f2 siempre\f6  \f2 puede\f6  \f2 decidir\f6  \f2 de\f6  \f2 forma\f6  \f2 clara\f6 .\f2\par
+\par
+Por\f6  \f2 eso\f6  \f2 muchos\f6  \f2 lenguajes\f6  \f2 la\f6  \f2 evitan\f6  \f2 en\f6  \f2 clases\f6 .\f2\par
+\par
+\f6\'bf\f8 Existe\f6  \f8 herencia\f6  \f8 m\'faltiple\f6  \f8 en\f6  \f8 Java\f6 ?\f8\par
+\f4\u10060?\f7  \f4 En\f6  \f4 clases\f6 : \f4 NO\par
+\par
+Java\f6  \f4 no\f6  \f4 permite\f6  \f4 herencia\f6  \f4 m\f8\'faltiple\f6  \f8 entre\f6  \f8 clases\f6 :\f8\par
+\par
+class\f6  \f8 D\f6  \f8 extends\f6  \f8 A\f6 , \f8 B\f6   // \f8 ERROR\f6  \f8 en\f6  \f8 Java\par
+\par
+Una\f6  \f8 clase\f6  \f8 solo\f6  \f8 puede\f6  \f8 extender\f6  \f8 una\f6  \f8\'fanica\f6  \f8 clase\f6  \f8 padre\f6 :\f8\par
+\par
+class\f6  \f8 D\f6  \f8 extends\f6  \f8 A\f6   // \f8 correcto\par
+\par
+9. Las\f6  \f8 excepciones\f6  \f8 en\f6  \f8 los\f6  \f8 lenguajes\f6  \f8 orientados\f6  \f8 a\f6  \f8 objetos\f6  \f8 son\f6  \f8 objetos\f6 . \f8 Por\f6  \f8 tanto\f6 , \f8 se\f6  \f8 pueden\f6  \f8 crear\f6  \f8 excepciones\f6  \f8 personalizadas\f6 . \f8 Pon\f6  \f8 un\f6  \f8 ejemplo\f6  \f8 en\f6  \f8 Java\f6  \f8 de\f6  \f8 una\f6  \f8 excepci\'f3n\f6  \f8 personalizada\f6  (\f8 UsuarioNoEncontradoException\f6 ), \f8 que\f6  \f8 sea\f6  \f8 no\f6  \f8 controlada\f6  \f8 y\f6  \f8 que\f6  \f8 adem\'e1s\f6  \f8 este\f6  \f8 compuesto\f6  \f8 con\f6  \f8 un\f6  \f8 Usuario\f6 , \f8 para\f6  \f8 saber\f6  \f8 qu\'e9\f6  \f8 Usuario\f6  \f8 dio\f6  \f8 el\f6  \f8 problema\f6 . \f8 Permite\f6  \f8 adem\'e1s\f6  \f8 que\f6  \f8 se\f6  \f8 pueda\f6  \f8 incluir\f6  \f8 la\f6  \f8 causa\f6 , \f8 es\f6  \f8 decir\f6 , \f8 sobrecarga\f6  \f8 el\f6  \f8 constructor\f6  \f8 para\f6  \f8 tener\f6  \f8 una\f6  \f8 versi\'f3n\f6  \f8 que\f6  \f8 permita\f6  \f8 a\'f1adir\f6  \f8 la\f6  \f8 causa\f6  \f8 subyacente.\par
+\par
+Respuestsa: \par
+\par
+Excepci\'f3n\f6  \f8 personalizada\f6  \f8 NO\f6  \f8 controlada\par
+\par
+Una\f6  \f8 excepci\'f3n\f6  \f8 no\f6  \f8 controlada\f6  (\f8 unchecked\f6 ) \f8 en\f6  \f8 Java\f6  \f8 es\f6  \f8 la\f6  \f8 que\f6  \f8 extiende\f6 :\f8\par
+\par
+RuntimeException\par
+2\f6 . \f8 Clase\f6  \f8 Usuario\f6  (\f8 para\f6  \f8 composici\'f3n\f6 )\f8\par
+\par
+Primero\f6  \f8 un\f6  \f8 objeto\f6  \f8 simple\f6  \f8 que\f6  \f8 representar\'e1\f6  \f8 al\f6  \f8 usuario\f6 :\f8\par
+\par
+public\f6  \f8 class\f6  \f8 Usuario\f6  \{\f8\par
+\par
+\f6     \f8 private\f6  \f8 String\f6  \f8 nombre\f6 ;\f8\par
+\f6     \f8 private\f6  \f8 String\f6  \f8 email\f6 ;\f8\par
+\par
+\f6     \f8 public\f6  \f8 Usuario\f6 (\f8 String\f6  \f8 nombre\f6 , \f8 String\f6  \f8 email\f6 ) \{\f8\par
+\f6         \f8 this\f6 .\f8 nombre\f6  = \f8 nombre\f6 ;\f8\par
+\f6         \f8 this\f6 .\f8 email\f6  = \f8 email\f6 ;\f8\par
+\f6     \}\f8\par
+\par
+\f6     \f8 public\f6  \f8 String\f6  \f8 getNombre\f6 () \{\f8\par
+\f6         \f8 return\f6  \f8 nombre\f6 ;\f8\par
+\f6     \}\f8\par
+\par
+\f6     \f8 public\f6  \f8 String\f6  \f8 getEmail\f6 () \{\f8\par
+\f6         \f8 return\f6  \f8 email\f6 ;\f8\par
+\f6     \}\f8\par
+\par
+\f6     \f8 @Override\par
+\f6     \f8 public\f6  \f8 String\f6  \f8 toString\f6 () \{\f8\par
+\f6         \f8 return\f6  \f8 nombre\f6  + \f8 "\f6  (\f8 "\f6  + \f8 email\f6  + \f8 "\f6 )\f8 "\f6 ;\f8\par
+\f6     \}\f8\par
+\f6\}\f8\par
+3\f6 . \f8 Excepci\'f3n\f6  \f8 personalizada\f6 : \f8 UsuarioNoEncontradoException\par
+\par
+Ahora\f6  \f8 creamos\f6  \f8 la\f6  \f8 excepci\'f3n\f6 :\f8\par
+\par
+Es\f6  \f8 no\f6  \f8 controlada\f6  (\f8 RuntimeException\f6 )\f8\par
+Contiene\f6  \f8 un\f6  \f8 Usuario\f6  (\f8 composici\'f3n\f6 )\f8\par
+Permite\f6  \f8 incluir\f6  \f8 causa\f6  \f8 subyacente\par
+Tiene\f6  \f8 constructores\f6  \f8 sobrecargados\par
+public\f6  \f8 class\f6  \f8 UsuarioNoEncontradoException\f6  \f8 extends\f6  \f8 RuntimeException\f6  \{\f8\par
+\par
+\f6     \f8 private\f6  \f8 Usuario\f6  \f8 usuario\f6 ;\f8\par
+\par
+\f6     // \f8 1\f6 . \f8 Constructor\f6  \f8 b\'e1sico\f6  \f8 con\f6  \f8 usuario\par
+\f6     \f8 public\f6  \f8 UsuarioNoEncontradoException\f6 (\f8 Usuario\f6  \f8 usuario\f6 ) \{\f8\par
+\f6         \f8 super\f6 (\f8 "Usuario\f6  \f8 no\f6  \f8 encontrado\f6 : \f8 "\f6  + \f8 usuario\f6 );\f8\par
+\f6         \f8 this\f6 .\f8 usuario\f6  = \f8 usuario\f6 ;\f8\par
+\f6     \}\f8\par
+\par
+\f6     // \f8 2\f6 . \f8 Constructor\f6  \f8 con\f6  \f8 mensaje\f6  \f8 personalizado\par
+\f6     \f8 public\f6  \f8 UsuarioNoEncontradoException\f6 (\f8 String\f6  \f8 mensaje\f6 , \f8 Usuario\f6  \f8 usuario\f6 ) \{\f8\par
+\f6         \f8 super\f6 (\f8 mensaje\f6 );\f8\par
+\f6         \f8 this\f6 .\f8 usuario\f6  = \f8 usuario\f6 ;\f8\par
+\f6     \}\f8\par
+\par
+\f6     // \f8 3\f6 . \f8 Constructor\f6  \f8 con\f6  \f8 causa\f6  (\f8 Throwable\f6 )\f8\par
+\f6     \f8 public\f6  \f8 UsuarioNoEncontradoException\f6 (\f8 String\f6  \f8 mensaje\f6 , \f8 Usuario\f6  \f8 usuario\f6 , \f8 Throwable\f6  \f8 causa\f6 ) \{\f8\par
+\f6         \f8 super\f6 (\f8 mensaje\f6 , \f8 causa\f6 );\f8\par
+\f6         \f8 this\f6 .\f8 usuario\f6  = \f8 usuario\f6 ;\f8\par
+\f6     \}\f8\par
+\par
+\f6     // \f8 Getter\f6  \f8 para\f6  \f8 el\f6  \f8 usuario\f6  \f8 que\f6  \f8 provoc\'f3\f6  \f8 el\f6  \f8 error\par
+\f6     \f8 public\f6  \f8 Usuario\f6  \f8 getUsuario\f6 () \{\f8\par
+\f6         \f8 return\f6  \f8 usuario\f6 ;\f8\par
+\f6     \}\f8\par
+\f6\}\f8\par
+4\f6 . \f8 Ejemplo\f6  \f8 de\f6  \f8 uso\par
+\par
+Simulamos\f6  \f8 una\f6  \f8 b\'fasqueda\f6  \f8 de\f6  \f8 usuario\f6 :\f8\par
+\par
+public\f6  \f8 class\f6  \f8 ServicioUsuarios\f6  \{\f8\par
+\par
+\f6     \f8 public\f6  \f8 Usuario\f6  \f8 buscarUsuario\f6 (\f8 String\f6  \f8 email\f6 ) \{\f8\par
+\par
+\f6         // \f8 Simulaci\'f3n\f6  \f8 de\f6  \f8 fallo\par
+\f6         \f8 Usuario\f6  \f8 buscado\f6  = \f8 new\f6  \f8 Usuario\f6 (\f8 "Juan"\f6 , \f8 email\f6 );\f8\par
+\par
+\f6         \f8 boolean\f6  \f8 encontrado\f6  = \f8 false\f6 ;\f8\par
+\par
+\f6         \f8 if\f6  (!\f8 encontrado\f6 ) \{\f8\par
+\f6             \f8 throw\f6  \f8 new\f6  \f8 UsuarioNoEncontradoException\f6 (\f8\par
+\f6                 \f8 "No\f6  \f8 existe\f6  \f8 el\f6  \f8 usuario\f6  \f8 en\f6  \f8 la\f6  \f8 base\f6  \f8 de\f6  \f8 datos"\f6 ,\f8\par
+\f6                 \f8 buscado\par
+\f6             );\f8\par
+\f6         \}\f8\par
+\par
+\f6         \f8 return\f6  \f8 buscado\f6 ;\f8\par
+\f6     \}\f8\par
+\f6\}\f8\par
+5\f6 . \f8 Ejemplo\f6  \f8 con\f6  \f8 causa\f6  (\f8 exception\f6  \f8 chaining\f6 )\f8\par
+public\f6  \f8 class\f6  \f8 Main\f6  \{\f8\par
+\f6     \f8 public\f6  \f8 static\f6  \f8 void\f6  \f8 main\f6 (\f8 String\f6 [] \f8 args\f6 ) \{\f8\par
+\par
+\f6         \f8 ServicioUsuarios\f6  \f8 servicio\f6  = \f8 new\f6  \f8 ServicioUsuarios\f6 ();\f8\par
+\par
+\f6         \f8 try\f6  \{\f8\par
+\f6             \f8 servicio\f6 .\f8 buscarUsuario\f6 (\f8 "juan@email\f6 .\f8 com"\f6 );\f8\par
+\par
+\f6         \} \f8 catch\f6  (\f8 UsuarioNoEncontradoException\f6  \f8 e\f6 ) \{\f8\par
+\par
+\f6             // \f8 Simulaci\'f3n\f6  \f8 de\f6  \f8 causa\f6  \f8 original\par
+\f6             \f8 Throwable\f6  \f8 causa\f6  = \f8 new\f6  \f8 IllegalStateException\f6 (\f8 "Error\f6  \f8 de\f6  \f8 conexi\'f3n\f6  \f8 a\f6  \f8 la\f6  \f8 BD"\f6 );\f8\par
+\par
+\f6             \f8 throw\f6  \f8 new\f6  \f8 UsuarioNoEncontradoException\f6 (\f8\par
+\f6                 \f8 "Fallo\f6  \f8 al\f6  \f8 buscar\f6  \f8 usuario"\f6 ,\f8\par
+\f6                 \f8 e\f6 .\f8 getUsuario\f6 (),\f8\par
+\f6                 \f8 causa\par
+\f6             );\f8\par
+\f6         \}\f8\par
+\f6     \}\f8\par
+\par
+10. Herencia\f6  \f8 vs\f6 . \f8 Composici\'f3n\f6 . \f8 Se\f6  \f8 dice\f6  \f8 que\f6  \f8 no\f6  \f8 se\f6  \f8 debe\f6  \f8 emplear\f6  \f8 herencia\f6  \f8 simplemente\f6  \f8 por\f6  \f8 reutilizar\f6  \f8 c\'f3digo\f6 , \f8 es\f6  \f8 decir\f6 , \f8 que\f6  \f8 si\f6  \f8 quiero\f6  \f8 reutilizar\f6  \f8 c\'f3digo\f6  \f8 simplemente\f6 , \f8 no\f6  \f8 debo\f6  \f8 pensar\f6  \f8 en\f6  \f8 herencia\f6  \f8 como\f6  \f8 primera\f6  \f8 opci\'f3n\f6  \'bf\f8 por\f6  \f8 qu\'e9\f6 ?\par
+\par
+Respuesta: \par
+1. Herencia vs composici\'f3n: qu\'e9 significan realmente\par
+\f4\u10004?\f7  \f4 Herencia\par
+\par
+Representa\f6  \f4 una\f6  \f4 relaci\f8\'f3n\f6 :\f8\par
+\par
+\f9\ldblquote\f8 Un\f6  \f8 objeto\f6  \f8 ES\f6  \f8 UN\f6  \f8 tipo\f6  \f8 de\f6  \f8 otro\f9\rdblquote\f8\par
+\par
+class\f6  \f8 Vehiculo\f6  \{ \}\f8\par
+class\f6  \f8 Coche\f6  \f8 extends\f6  \f8 Vehiculo\f6  \{ \}\f8\par
+\par
+Un\f6  \f8 coche\f6  \f8 es\f6  \f8 un\f6  \f8 veh\'edculo\f6 .\f8\par
+\par
+\f4\u10004?\f7  \f4 Composici\f8\'f3n\par
+\par
+Representa\f6  \f8 una\f6  \f8 relaci\'f3n\f6 :\f8\par
+\par
+\f9\ldblquote\f8 Un\f6  \f8 objeto\f6  \f8 TIENE\f6  \f8 UN\f6  \f8 otro\f6  \f8 objeto\f9\rdblquote\f8\par
+\par
+class\f6  \f8 Motor\f6  \{ \}\f8\par
+\par
+class\f6  \f8 Coche\f6  \{\f8\par
+\f6     \f8 private\f6  \f8 Motor\f6  \f8 motor\f6 ;\f8\par
+\f6\}\f8\par
+\par
+Un\f6  \f8 coche\f6  \f8 tiene\f6  \f8 un\f6  \f8 motor\f6 .\f8\par
+\par
+2\f6 . \f8 Por\f6  \f8 qu\'e9\f6  \f8 NO\f6  \f8 deber\'edas\f6  \f8 usar\f6  \f8 herencia\f6  \f8 solo\f6  \f8 para\f6  \f8 reutilizar\f6  \f8 c\'f3digo\par
+\par
+Porque\f6  \f8 la\f6  \f8 herencia\f6  \f8 introduce\f6  \f8 dependencias\f6  \f8 fuertes\f6  \f8 y\f6  \f8 r\'edgidas\f6 .\f8\par
+\par
+Problemas\f6  \f8 principales\f6 :\f8\par
+1\f6 . \f8 Acoplamiento\f6  \f8 excesivo\par
+\par
+Cuando\f6  \f8 heredas\f6 , \f8 la\f6  \f8 subclase\f6  \f8 queda\f6  \f8 atrapada\f6  \f8 en\f6  \f8 la\f6  \f8 implementaci\'f3n\f6  \f8 de\f6  \f8 la\f6  \f8 clase\f6  \f8 padre\f6 .\f8\par
+\par
+class\f6  \f8 A\f6  \{\f8\par
+\f6     \f8 void\f6  \f8 metodo\f6 () \{ ... \}\f8\par
+\f6\}\f8\par
+\par
+class\f6  \f8 B\f6  \f8 extends\f6  \f8 A\f6  \{ \}\f8\par
+\par
+Si\f6  \f8 A\f6  \f8 cambia\f6  \f8 internamente\f6 , \f8 B\f6  \f8 puede\f6  \f8 romperse\f6  \f8 sin\f6  \f8 tocar\f6  \f8 su\f6  \f8 c\'f3digo\f6 .\f8\par
+\par
+\f2\u-10179?\u-9143?\f7  \f2 Con\f6  \f2 composici\f8\'f3n\f6 , \f8 puedes\f6  \f8 cambiar\f6  \f8 el\f6  \f8 componente\f6  \f8 sin\f6  \f8 afectar\f6  \f8 tanto\f6 .\f8\par
+\par
+2\f6 . \f8 Heredas\f6  \f9\ldblquote\f8 demasiado\f9\rdblquote\f7  \f6 (\f8 herencia\f6  \f8 no\f6  \f8 deseada\f6 )\f8\par
+\par
+La\f6  \f8 subclase\f6  \f8 hereda\f6  \f8 cosas\f6  \f8 que\f6  \f8 no\f6  \f8 necesita\f6 .\f8\par
+\par
+Ejemplo\f6  \f8 t\'edpico\f6 :\f8\par
+\par
+class\f6  \f8 Ave\f6  \{\f8\par
+\f6     \f8 void\f6  \f8 volar\f6 () \{ \}\f8\par
+\f6\}\f8\par
+\par
+class\f6  \f8 Pinguino\f6  \f8 extends\f6  \f8 Ave\f6  \{ \}\par
+\par
+11. Herencia vs. Composici\'f3n. Se dice que se debe "favorecer la composici\'f3n frente a la herencia", \'bfpor qu\'e9?\par
+\par
+Respuesta: \par
+\par
+Diferencia esencial\par
+\f4\u10004?\f7  \f4 Herencia\par
+\par
+Modela\f6  \f4 una\f6  \f4 relaci\f8\'f3n\f6 :\f8\par
+\par
+\f9\ldblquote\f8 ES\f6 -\f8 UN\f9\rdblquote\f8\par
+\par
+class\f6  \f8 Ave\f6  \{ \}\f8\par
+class\f6  \f8 Pato\f6  \f8 extends\f6  \f8 Ave\f6  \{ \}\f8\par
+\f4\u10004?\f7  \f4 Composici\f8\'f3n\par
+\par
+Modela\f6  \f8 una\f6  \f8 relaci\'f3n\f6 :\f8\par
+\par
+\f9\ldblquote\f8 TIENE\f6 -\f8 UN\f9\rdblquote\f8\par
+\par
+class\f6  \f8 Motor\f6  \{ \}\f8\par
+\par
+class\f6  \f8 Coche\f6  \{\f8\par
+\f6     \f8 private\f6  \f8 Motor\f6  \f8 motor\f6 ;\f8\par
+\f6\}\par
+\par
+12.   Herencia vs. Composici\'f3n. Se dice que la "herencia rompe la encapsulaci\'f3n", \'bfa qu\'e9 se refiere esto?\par
+\par
+Respuesta: \par
+\par
+\par
+\f10\lang3082\par
+\par
+\f8\par
+\par
+\f6\par
+\par
+\f0\lang3082\par
+}
+ 
