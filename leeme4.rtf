@@ -1,147 +1,134 @@
-{\rtf1\fbidis\ansi\ansicpg1252\deff0\nouicompat\deflang3082{\fonttbl{\f0\fnil\fcharset0 Courier New;}{\f1\fnil Courier New;}{\f2\fnil\fcharset1 Segoe UI Symbol;}{\f3\fnil\fcharset1 Cambria Math;}{\f4\fnil\fcharset1 Segoe UI Symbol;}{\f5\fnil\fcharset1 Segoe UI Emoji;}{\f6\fnil\fcharset0 Cambria Math;}{\f7\fnil Cambria Math;}{\f8\fnil\fcharset0 Segoe UI Symbol;}{\f9\fnil Segoe UI Symbol;}{\f10\fnil\fcharset0 Segoe UI Emoji;}{\f11\fnil Segoe UI Emoji;}}
-{\*\generator Riched20 10.0.19041}{\*\mmathPr\mmathFont3\mwrapIndent1440 }\viewkind4\uc1 
-\pard\f0\fs22 1. En C, podemos crear estructuras mayores componiendo unas con otras, que suelen describirse como "A tiene-un/tiene-varios B". Pon un ejemplo, empleando struct, de una l\'ednea de puntos, donde puntos tienen dos coordenadas (x e y), y la l\'ednea esta hecha de dos puntos. Incluye una funci\'f3n para calcular la distancia entre puntos y otra para hallar la longitud de una l\'ednea.\par
-\par
-respuesta:\par
-\par
-#include <stdio.h>\par
-#include <math.h>\par
-\par
-/* Estructura que representa un punto */\par
-typedef struct \{\par
-    double x;\par
-    double y;\par
-\} Punto;\par
-\par
-/* Estructura que representa una l\'ednea formada por dos puntos */\par
-typedef struct \{\par
-    Punto p1;\par
-    Punto p2;\par
-\} Linea;\par
-\par
-/* Funci\'f3n para calcular la distancia entre dos puntos */\par
-double distancia(Punto a, Punto b) \{\par
-    return sqrt((b.x - a.x) * (b.x - a.x) +\par
-                (b.y - a.y) * (b.y - a.y));\par
-\}\par
-\par
-/* Funci\'f3n para calcular la longitud de una l\'ednea */\par
-double longitudLinea(Linea l) \{\par
-    return distancia(l.p1, l.p2);\par
-\}\par
-\par
-/* Ejemplo de uso */\par
-int main() \{\par
-    Punto A = \{0.0, 0.0\};\par
-    Punto B = \{3.0, 4.0\};\par
-\par
-    Linea L = \{A, B\};\par
-\par
-    printf("Distancia entre puntos: %.2f\\n", distancia(A, B));\par
-    printf("Longitud de la l\'ednea: %.2f\\n", longitudLinea(L));\par
-\par
-    return 0;\par
-\}\par
-\par
-\par
-2. Ahora transforma ese ejemplo a orientaci\'f3n a objetos con Java, para tener un primer ejemplo de composici\'f3n en orientaci\'f3n a objetos. Crea una clase Punto, y una clase Linea. La clase Punto debe tener un m\'e9todo para calcular distancia a otro Punto y Linea debe tener un m\'e9todo para calcular su longitud. Gracias a la ocultaci\'f3n de informaci\'f3n, supera a C, garantizando que los puntos sean inmutables, al igual que la l\'ednea, que una vez creada, no queremos que se modifique de qu\'e9 a qu\'e9 puntos va dicha l\'ednea.\par
-\par
-Respuesta: \par
-\par
-public final class Punto \{\par
-    private final double x;\par
-    private final double y;\par
-\par
-    public Punto(double x, double y) \{\par
-        this.x = x;\par
-        this.y = y;\par
-    \}\par
-\par
-    public double getX() \{\par
-        return x;\par
-    \}\par
-\par
-    public double getY() \{\par
-        return y;\par
-    \}\par
-\par
-    // M\'e9todo de instancia: distancia a otro punto\par
-    public double distanciaA(Punto otro) \{\par
-        double dx = otro.x - this.x;\par
-        double dy = otro.y - this.y;\par
-        return Math.sqrt(dx * dx + dy * dy);\par
-    \}\par
-\}\par
-\par
-\par
-public final class Linea \{\par
-    private final Punto p1;\par
-    private final Punto p2;\par
-\par
-    public Linea(Punto p1, Punto p2) \{\par
-        this.p1 = p1;\par
-        this.p2 = p2;\par
-    \}\par
-\par
-    public Punto getP1() \{\par
-        return p1;\par
-    \}\par
-\par
-    public Punto getP2() \{\par
-        return p2;\par
-    \}\par
-\par
-    // Longitud de la l\'ednea usando delegaci\'f3n a Punto\par
-    public double longitud() \{\par
-        return p1.distanciaA(p2);\par
-    \}\par
-\}\par
-\par
-\par
-3. \'bfQu\'e9 significa la multiplicidad en la composici\'f3n? En el ejemplo anterior, \'bfcu\'e1l es la multiplicidad entre Linea y Punto? Ind\'edcalo expresando la multiplicidad en ambas direcciones, de Linea a Punto y de Punto a Linea.\par
-\par
-Respuesta: \par
-\par
-La multiplicidad en una relaci\'f3n de composici\'f3n (o asociaci\'f3n en general) indica cu\'e1ntas instancias de una clase pueden estar relacionadas con una instancia de otra clase.\par
-\par
-No habla de \f1\ldblquote\f0 propiedad\f1\rdblquote  \f0 del lenguaje, sino de un concepto de modelado UML: cu\'e1ntos objetos participan en la relaci\'f3n.\par
-\par
-\f2\u-10179?\u-9012?\f1  \f0 En el ejemplo: Linea y Punto\par
-\par
-Una Linea est\'e1 compuesta por exactamente dos Punto:\par
-\par
-p1\par
-p2\par
-\par
-Y cada Punto (en este modelo concreto) puede pertenecer a una \'fanica l\'ednea si asumimos composici\'f3n estricta.\par
-\par
-\f2\u-10179?\u-8959?\f1  \f0 Multiplicidad de Linea \f3\u8594?\f1  \f0 Punto\par
-\par
-\f2\u-10179?\u-9143?\f1  \f0 Una Linea tiene:\par
-\par
-exactamente 2 puntos\par
-\par
-Se expresa como:\par
-\par
-Linea \f4\u9472?\u9472?\u9472?\f1  \f0 2 \f4\u9472?\u9472?\u9472?\f1  \f0 Punto\par
-\par
-o en notaci\'f3n UML:\par
-\par
-1 Linea  \f1\emdash\emdash   2 Punto\par
-\par
-M\f0\'e1s formalmente:\par
-\par
-Linea \f3\u8594?\f1  \f0 Punto = 2\par
-\f2\u-10179?\u-8959?\f1  \f0 Multiplicidad de Punto \f3\u8594?\f1  \f0 Linea\par
-\par
-Aqu\'ed hay dos posibles interpretaciones, y es importante distinguirlas:\par
-\par
-\f5\u10004?\u-497?\f1  \f0 En el modelo de composici\'f3n estricta (el que implica \f1\ldblquote\f0 parte de\f1\rdblquote\f0 )\par
-\par
-Un Punto pertenece a una sola l\'ednea:\par
-\par
-Punto \f3\u8594?\f1  \f0 Linea = 1\par
-\par
+TEMA 4: COMPOSICIÓN:
+
+1. En C, podemos crear estructuras mayores componiendo unas con otras, que suelen describirse como "A tiene-un/tiene-varios B". 
+Pon un ejemplo, empleando struct, de una línea de puntos, donde puntos tienen dos coordenadas (x e y), y la línea esta hecha de dos puntos. 
+Incluye una función para calcular la distancia entre puntos y otra para hallar la longitud de una línea.
+
+    Respuesta: 
+
+#include <stdio.h>
+#include <math.h>
+
+/* Un punto tiene dos coordenadas */
+struct Punto {
+    float x;
+    float y;
+};
+
+/* Una línea está compuesta por dos puntos */
+struct Linea {
+    struct Punto inicio;
+    struct Punto fin;
+};
+
+/* Calcula la distancia entre dos puntos */
+float distancia(struct Punto a, struct Punto b) {
+    float dx = b.x - a.x;
+    float dy = b.y - a.y;
+
+    return sqrt(dx * dx + dy * dy);
+}
+
+/* Calcula la longitud de una línea */
+float longitudLinea(struct Linea l) {
+    return distancia(l.inicio, l.fin);
+}
+
+int main() {
+    struct Punto p1 = {1.0, 2.0};
+    struct Punto p2 = {4.0, 6.0};
+
+    struct Linea linea = {p1, p2};
+
+    printf("Distancia entre puntos: %.2f\n", distancia(p1, p2));
+    printf("Longitud de la linea: %.2f\n", longitudLinea(linea));
+
+    return 0;
+}
+
+2. Ahora transforma ese ejemplo a orientación a objetos con Java, para tener un primer ejemplo de composición en orientación a objetos. 
+Crea una clase Punto, y una clase Linea. La clase Punto debe tener un método para calcular distancia a otro Punto y Linea debe tener un método para calcular su longitud. 
+Gracias a la ocultación de información, supera a C, garantizando que los puntos sean inmutables, al igual que la línea, que una vez creada, no queremos que se modifique de qué a qué puntos va dicha línea.
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Punto p1 = new Punto(1.0, 2.0);
+        Punto p2 = new Punto(4.0, 6.0);
+
+        Linea linea = new Linea(p1, p2);
+
+        System.out.println("Distancia entre puntos: " + p1.distanciaA(p2));
+        System.out.println("Longitud de la línea: " + linea.longitud());
+    }
+}
+
+/* Clase inmutable Punto */
+final class Punto {
+
+    private final double x;
+    private final double y;
+
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    /* Calcula la distancia a otro punto */
+    public double distanciaA(Punto otro) {
+
+        double dx = otro.x - this.x;
+        double dy = otro.y - this.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
+
+/* Clase inmutable Linea */
+final class Linea {
+
+    private final Punto inicio;
+    private final Punto fin;
+
+    public Linea(Punto inicio, Punto fin) {
+        this.inicio = inicio;
+        this.fin = fin;
+    }
+
+    public Punto getInicio() {
+        return inicio;
+    }
+
+    public Punto getFin() {
+        return fin;
+    }
+
+    /* Longitud de la línea */
+    public double longitud() {
+        return inicio.distanciaA(fin);
+    }
+}
+
+3.¿Qué significa la multiplicidad en la composición? En el ejemplo anterior, ¿cuál es la multiplicidad entre Linea y Punto? 
+Indícalo expresando la multiplicidad en ambas direcciones, de Linea a Punto y de Punto a Linea
+
+Respuesta:
+La multiplicidad en una relación de composición (o asociación) indica cuántos objetos de una clase pueden estar relacionados con objetos de la otra clase.
+
+En el ejemplo:
+
+una Linea está compuesta por dos Punto
+cada Punto pertenece a una Linea concreta (si pensamos únicamente en este modelo simple)
+
 4\f6 . \'bf\f0 Qu\'e9\f6  \f0 significa\f6  \f0 composici\'f3n\f6  \f0 fuerte\f6  \f0 y\f6  \f0 composici\'f3n\f6  \f0 d\'e9bil\f6 ? \'bf\f0 Qu\'e9\f6  \f0 consecuencia\f6  \f0 implica\f6  \f0 en\f6  \f0 relaci\'f3n\f6  \f0 al\f6  \f0 ciclo\f6  \f0 de\f6  \f0 vida\f6  \f0 de\f6  \f0 los\f6  \f0 objetos\f6 ? \f0 Indica\f6  \f0 a\f6  \f0 cu\'e1l\f6  \f0 solemos\f6  \f0 referirnos\f6  \f0 como\f6  \f0 "asociaci\'f3n\f6  \f0 o\f6  \f0 agregaci\'f3n"\f6  \f0 y\f6  \f0 a\f6  \f0 cu\'e1l\f6  \f0 como\f6  \f0 "composici\'f3n"\f6  \f0 propiamente\f6 .\par
 \par
 Respuesta: \par
